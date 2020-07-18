@@ -6,16 +6,13 @@
 class Transform : public Component {
 public:
     Vec2 position;
-    Vec2 velocity;
 
     Transform(int posX, int posY) 
-        : position{posX, posY}, velocity{0, 0} {}
+        : position{posX, posY} {}
 
     void init() override {}
 
-    void update(InputManager * events) override {
-        position += velocity;
-    }
+    void update(InputManager * events) override {}
 
     void render(Graphics * gfx) override {}
 };

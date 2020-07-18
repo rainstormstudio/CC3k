@@ -27,6 +27,7 @@ void Game::init() {
     player->addComponent<Transform>(20, 5);
     player->addComponent<Appearance>('@');
     player->addComponent<Attributes>("Human", 20, 20, 15, 18);
+    player->addComponent<Movement>();
     Entity * map = manager->addEntity("Map", MAP_LAYER);
     map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
     map->getComponent<Floor>()->import("./maps/default.map");
@@ -38,20 +39,20 @@ void Game::processInput() {
     while (events->getInputType() == TOTAL_COMMANDS) {
         std::cout << "Please enter a valid command." << std::endl;
         std::cout << "-- movement commands --------------------------------------------" << std::endl;
-        std::cout << "go North: " << events->getCommand(NORTH) << std::endl;
-        std::cout << "go South: " << events->getCommand(SOUTH) << std::endl;
-        std::cout << "go East:  " << events->getCommand(EAST) << std::endl;
-        std::cout << "go West:  " << events->getCommand(WEST) << std::endl;
-        std::cout << "go North-east: " << events->getCommand(NORTHEAST) << std::endl;
-        std::cout << "go North-west: " << events->getCommand(NORTHWEST) << std::endl;
-        std::cout << "go South-east: " << events->getCommand(SOUTHEAST) << std::endl;
-        std::cout << "go South-west: " << events->getCommand(SOUTHWEST) << std::endl;
+        std::cout << "  go North: " << events->getCommand(NORTH) << std::endl;
+        std::cout << "  go South: " << events->getCommand(SOUTH) << std::endl;
+        std::cout << "  go East:  " << events->getCommand(EAST) << std::endl;
+        std::cout << "  go West:  " << events->getCommand(WEST) << std::endl;
+        std::cout << "  go North-east: " << events->getCommand(NORTHEAST) << std::endl;
+        std::cout << "  go North-west: " << events->getCommand(NORTHWEST) << std::endl;
+        std::cout << "  go South-east: " << events->getCommand(SOUTHEAST) << std::endl;
+        std::cout << "  go South-west: " << events->getCommand(SOUTHWEST) << std::endl;
         std::cout << "-- action commands ----------------------------------------------" << std::endl;
-        std::cout << "use potion:          " << events->getCommand(USE_POTION) << std::endl;
-        std::cout << "attack:              " << events->getCommand(ATTACK) << std::endl;
-        std::cout << "toggle stop enemies: " << events->getCommand(STOP_ENEMIES) << std::endl;
-        std::cout << "restart the game:    " << events->getCommand(RESTART_GAME) << std::endl;
-        std::cout << "quit the game:       " << events->getCommand(QUIT_GAME) << std::endl;
+        std::cout << "  use potion:          " << events->getCommand(USE_POTION) << std::endl;
+        std::cout << "  attack:              " << events->getCommand(ATTACK) << std::endl;
+        std::cout << "  toggle stop enemies: " << events->getCommand(STOP_ENEMIES) << std::endl;
+        std::cout << "  restart the game:    " << events->getCommand(RESTART_GAME) << std::endl;
+        std::cout << "  quit the game:       " << events->getCommand(QUIT_GAME) << std::endl;
         std::cout << "-----------------------------------------------------------------" << std::endl;
         events->update();
     }
