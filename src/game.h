@@ -2,12 +2,14 @@
 #define GAME_H
 
 class Graphics;
+class InputManager;
 class EntityManager;
 
 class Game {
 private:
     bool isRunning;
     Graphics * gfx;
+    InputManager * events;
     EntityManager * manager;
 
 public:

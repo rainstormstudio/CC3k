@@ -34,7 +34,7 @@ public:
     void incDef( int value) { def += value; }
 
     void init() override {}
-    void update() override {}
+    void update(InputManager * events) override {}
 
     void render(Graphics * gfx) override {
         gfx->write("Race: " + race, 0, gfx->screen_height - 5);

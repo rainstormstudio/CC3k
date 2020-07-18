@@ -78,7 +78,7 @@ public:
     }
 
     void init() override {}
-    void update() override {}
+    void update(InputManager * events) override {}
 
     void render(Graphics * gfx) override {
         for (int i = 0; i < map_height; ++i) {

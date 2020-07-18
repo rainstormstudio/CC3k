@@ -13,7 +13,7 @@ public:
 
     void init() override {}
 
-    void update() override {
+    void update(InputManager * events) override {
         position += velocity;
     }
 

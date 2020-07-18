@@ -11,7 +11,7 @@ class Graphics {
 public:
     int screen_width;
     int screen_height;
-    
+
     Graphics(int width, int height);
 
     void clear();

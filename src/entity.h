@@ -9,6 +9,7 @@
 
 class Component;
 class Graphics;
+class InputManager;
 
 class Entity {
     bool isActive;
@@ -20,7 +21,7 @@ public:
 
     Entity();
     Entity(std::string name, LayerType layer);
-    void update();
+    void update(InputManager * events);
     void render(Graphics * gfx);
 
     bool isAlive() const;

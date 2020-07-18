@@ -13,7 +13,7 @@ public:
     void setAppearance(char newChar) { ch = newChar; }
 
     void init() override {}
-    void update() override {}
+    void update(InputManager * events) override {}
     
     void render(Graphics * gfx) override {
         Transform * transform = owner->getComponent<Transform>();

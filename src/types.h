@@ -45,4 +45,21 @@ enum LayerType {
     TOTAL_LAYERS
 };
 
+enum CommandType {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST,
+    NORTHEAST,
+    NORTHWEST,
+    SOUTHEAST,
+    SOUTHWEST,
+    USE_POTION,
+    ATTACK,
+    STOP_ENEMIES,
+    RESTART_GAME,
+    QUIT_GAME,
+    TOTAL_COMMANDS
+};
+
 #endif

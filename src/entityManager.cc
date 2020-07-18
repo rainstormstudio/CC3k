@@ -6,10 +6,10 @@ void EntityManager::destroy() {
     }
 }
 
-void EntityManager::update() {
+void EntityManager::update(InputManager * events) {
     for (unsigned int i = 0; i < entities.size(); ++i) {
         if (entities[i]->isAlive()) {
-            entities[i]->update();
+            entities[i]->update(events);
         } else {
             entities.erase(entities.begin() + i);
         }

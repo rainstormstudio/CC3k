@@ -6,12 +6,13 @@
 #include "entity.h"
 #include "component.h"
 #include "graphics.h"
+#include "inputManager.h"
 
 class EntityManager {
     std::vector<Entity*> entities;
 public:
     void destroy();
-    void update();
+    void update(InputManager * events);
     void render(Graphics * gfx);
     Entity* addEntity(std::string name, LayerType layer);
     

@@ -3,12 +3,13 @@
 
 class Entity;
 class Graphics;
+class InputManager;
 
 class Component {
 public:
     Entity * owner;
     virtual void init() {}
-    virtual void update() {}
+    virtual void update(InputManager * events) {}
     virtual void render(Graphics * gfx) {}
 };
 

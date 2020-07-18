@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "component.h"
 #include "graphics.h"
+#include "inputManager.h"
 
 Entity::Entity() {
     isActive = true;
@@ -11,9 +12,9 @@ Entity::Entity(std::string name, LayerType layer)
     isActive = true;
 }
 
-void Entity::update() {
+void Entity::update(InputManager * events) {
     for (auto& component : components) {
-        component->update();
+        component->update(events);
     }
 }
 
