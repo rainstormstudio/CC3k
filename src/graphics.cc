@@ -31,3 +31,10 @@ void Graphics::render() {
 void Graphics::draw(char value, int x, int y) {
     theDisplay[x][y] = value;
 }
+
+void Graphics::write(std::string content, int x, int y) {
+    int len = content.length();
+    for (int i = 0; i < len && x + i < screen_width; ++i) {
+        theDisplay[y][x + i] = content[i];
+    }
+}
