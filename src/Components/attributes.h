@@ -6,25 +6,32 @@
 class Attributes : public Component {
     std::string race;
     unsigned int hp;
+    unsigned int maxHp;
     unsigned int atk;
     unsigned int def;
 public:
-    Attributes(std::string race, unsigned int hp, unsigned int atk, unsigned int def)
-        : race{race}, hp{hp}, atk{atk}, def{def} {
+    Attributes() : race{"Shade"}, hp{125}, maxHp{125}, atk{25}, def{25} {}
+    Attributes(std::string race, unsigned int hp, unsigned int maxHp, 
+                unsigned int atk, unsigned int def)
+        : race{race}, hp{hp}, maxHp{maxHp}, 
+            atk{atk}, def{def} {
     }
 
     unsigned int getHP() const { return hp; }
+    unsigned int getMaxHP() const { return maxHp; }
     unsigned int getAtk() const { return atk; }
     unsigned int getDef() const { return def; }
 
-    void incHP(unsigned int value) { hp += value; }
-    void decHP(unsigned int value) { hp -= value; }
+    void incHP(int value) { 
+        hp += value; 
+        if (hp > maxHp) hp = maxHp;
+    }
 
-    void incAtk(unsigned int value) { atk += value; }
-    void decAtk(unsigned int value) { atk -= value; }
+    void incMaxHP( int value) { maxHp += value; }
 
-    void incDef(unsigned int value) { def += value; }
-    void decDef(unsigned int value) { def -= value; }
+    void incAtk( int value) { atk += value; }
+
+    void incDef( int value) { def += value; }
 
     void init() override {}
     void update() override {}
