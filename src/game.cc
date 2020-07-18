@@ -3,10 +3,13 @@
 #include "entityManager.h"
 #include "graphics.h"
 #include "componentList.h"
+#include <stdlib.h>
+#include <time.h>
 
 Game::Game() {
     isRunning = false;
     gfx = nullptr;
+    srand(time(NULL));
 }
 
 Game::~Game() {
@@ -23,15 +26,23 @@ void Game::init() {
     gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
     events = new InputManager();
     manager = new EntityManager();
-    Entity * map = manager->addEntity("Map", MAP_LAYER);
-    map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
-    map->getComponent<Floor>()->import("./maps/default.map");
-    Entity * player = manager->addEntity("Player", PLAYER_LAYER);
-    player->addComponent<Transform>(20, 5);
-    player->addComponent<Appearance>('@');
-    player->addComponent<Attributes>("Human", 20, 20, 15, 18);
-    player->addComponent<Actions>();
-    player->addComponent<Movement>(map->getComponent<Floor>());
+    Entity * map = manager->addEntity("Map", MAP_LAYER); {
+        map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
+        map->getComponent<Floor>()->import("./maps/default.map");
+    }
+    Entity * player = manager->addEntity("Player", PLAYER_LAYER); {
+        player->addComponent<Transform>(20, 5);
+        player->addComponent<Appearance>('@');
+        player->addComponent<Attributes>("Human", 20, 20, 15, 18);
+        player->addComponent<Actions>();
+        player->addComponent<Movement>(map->getComponent<Floor>(), true);
+    }
+    Entity * enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
+        enemy->addComponent<Transform>(16, 4);
+        enemy->addComponent<Appearance>('H');
+        enemy->addComponent<Attributes>("Human", 20, 20, 15, 18);
+        enemy->addComponent<Movement>(map->getComponent<Floor>(), false);
+    }
     isRunning = true;
 }
 

@@ -9,17 +9,18 @@ class Actions : public Component {
 
 public:
     void init() override {
-        action = "";
+        action = "Player character has spawned.";
     }
 
     void update(InputManager * events) override {}
 
     void setAction(std::string done) {
-        action = done;
+        action += done;
     }
 
     void render(Graphics * gfx) override {
         gfx->write("Action: " + action, 0, gfx->screen_height - 1);
+        action = "";
     }
 };
 
