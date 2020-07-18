@@ -77,6 +77,14 @@ public:
         }
     }
 
+    bool isWall(int x, int y) {
+        if (map[y][x] == '|' || map[y][x] == '-' || map[y][x] == ' ') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     void init() override {}
     void update(InputManager * events) override {}
 

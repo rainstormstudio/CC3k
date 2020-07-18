@@ -23,14 +23,15 @@ void Game::init() {
     gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
     events = new InputManager();
     manager = new EntityManager();
+    Entity * map = manager->addEntity("Map", MAP_LAYER);
+    map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
+    map->getComponent<Floor>()->import("./maps/default.map");
     Entity * player = manager->addEntity("Player", PLAYER_LAYER);
     player->addComponent<Transform>(20, 5);
     player->addComponent<Appearance>('@');
     player->addComponent<Attributes>("Human", 20, 20, 15, 18);
-    player->addComponent<Movement>();
-    Entity * map = manager->addEntity("Map", MAP_LAYER);
-    map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
-    map->getComponent<Floor>()->import("./maps/default.map");
+    player->addComponent<Actions>();
+    player->addComponent<Movement>(map->getComponent<Floor>());
     isRunning = true;
 }
 
