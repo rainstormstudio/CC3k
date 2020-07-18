@@ -42,6 +42,8 @@ public:
         gfx->write("Atk: " + std::to_string(atk), 0, gfx->screen_height - 3);
         gfx->write("Def: " + std::to_string(def), 0, gfx->screen_height - 2);
     }
+
+    ~Attributes() override {}
 };
 
 #endif

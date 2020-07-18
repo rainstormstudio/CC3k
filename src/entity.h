@@ -20,6 +20,7 @@ public:
     LayerType layer;
 
     Entity();
+    ~Entity();
     Entity(std::string name, LayerType layer);
     void update(InputManager * events);
     void render(Graphics * gfx);

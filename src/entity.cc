@@ -7,6 +7,12 @@ Entity::Entity() {
     isActive = true;
 }
 
+Entity::~Entity() {
+    for (auto& component : components) {
+        delete component;
+    }
+}
+
 Entity::Entity(std::string name, LayerType layer) 
     : name{name}, layer{layer} {
     isActive = true;

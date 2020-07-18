@@ -22,6 +22,8 @@ public:
         gfx->write("Action: " + action, 0, gfx->screen_height - 1);
         action = "";
     }
+
+    ~Actions() override {}
 };
 
 #endif

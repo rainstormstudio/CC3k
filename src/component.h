@@ -11,6 +11,7 @@ public:
     virtual void init() {}
     virtual void update(InputManager * events) {}
     virtual void render(Graphics * gfx) {}
+    virtual ~Component() {}
 };
 
 #endif

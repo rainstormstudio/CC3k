@@ -10,5 +10,7 @@ int main(int argc, char *argv[]) {
         game->processInput();
     }
 
+    delete game;
+
     return 0;
 }

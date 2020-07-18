@@ -50,4 +50,7 @@ Entity* EntityManager::getEntityByName(std::string name) const {
 }
 
 EntityManager::~EntityManager() {
+    for (auto& entity : entities) {
+        delete entity;
+    }
 }

@@ -18,6 +18,8 @@ public:
         Transform * transform = owner->getComponent<Transform>();
         gfx->draw(ch, transform->position.y, transform->position.x);
     }
+
+    ~Appearance() override {}
 };
 
 #endif

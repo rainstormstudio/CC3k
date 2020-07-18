@@ -68,6 +68,8 @@ public:
 
     void render(Graphics* gfx) override {
     }
+
+    ~Movement() override {}
 };
 
 #endif

@@ -15,6 +15,8 @@ public:
     void update(InputManager * events) override {}
 
     void render(Graphics * gfx) override {}
+
+    ~Transform() override {}
 };
 
 #endif

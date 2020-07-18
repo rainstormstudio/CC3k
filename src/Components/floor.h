@@ -98,6 +98,10 @@ public:
                     gfx->screen_width - 10,
                     gfx->screen_height - 5);
     }
+
+    ~Floor() override {
+        
+    }
 };
 
 #endif
