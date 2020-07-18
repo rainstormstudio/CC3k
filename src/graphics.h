@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 
 class Graphics {
     int screen_width;
@@ -16,6 +17,7 @@ public:
     void render();
 
     void draw(char value, int x, int y);
+    void write(std::string content, int x, int y);
 };
 
 #endif
