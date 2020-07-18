@@ -8,7 +8,7 @@ Entity::Entity() {
 
 Entity::Entity(std::string name, LayerType layer) 
     : name{name}, layer{layer} {
-
+    isActive = true;
 }
 
 void Entity::update() {

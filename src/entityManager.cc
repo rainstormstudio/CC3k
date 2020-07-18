@@ -24,10 +24,10 @@ void EntityManager::render(Graphics* gfx) {
     }
 }
 
-Entity& EntityManager::addEntity(std::string name, LayerType layer) {
+Entity* EntityManager::addEntity(std::string name, LayerType layer) {
     Entity *entity = new Entity(name, layer);
     entities.emplace_back(entity);
-    return *entity;
+    return entity;
 }
 
 std::vector<Entity*> EntityManager::getEntitiesByLayer(LayerType layer) const {

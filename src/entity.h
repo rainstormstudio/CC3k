@@ -12,9 +12,9 @@ class Graphics;
 
 class Entity {
     bool isActive;
-    std::vector<Component*> components;
     std::map<const std::type_info*, Component*> componentTypes;
 public:
+    std::vector<Component*> components;
     std::string name;
     LayerType layer;
 

@@ -18,7 +18,7 @@ public:
     }
     void render(Graphics * gfx) override {
         Transform * transform = owner->getComponent<Transform>();
-        gfx->draw(ch, transform->position.x, transform->position.y);
+        gfx->draw(ch, transform->position.y, transform->position.x);
     }
 };
 

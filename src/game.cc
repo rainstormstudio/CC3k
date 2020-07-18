@@ -21,9 +21,9 @@ bool Game::loop() const {
 void Game::init() {
     gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
     manager = new EntityManager();
-    Entity player = manager->addEntity("Player", PLAYER_LAYER);
-    player.addComponent<Transform>(20, 5);
-    player.addComponent<Appearance>('@');
+    Entity * player = manager->addEntity("Player", PLAYER_LAYER);
+    player->addComponent<Transform>(20, 5);
+    player->addComponent<Appearance>('@');
     isRunning = true;
 }
 
@@ -38,4 +38,5 @@ void Game::update() {
 
 void Game::render() {
     manager->render(gfx);
+    gfx->render();
 }
