@@ -2,8 +2,8 @@
 #define APPEARANCE_H
 
 #include "../entityManager.h"
+#include "../graphics.h"
 #include "transform.h"
-#include "graphics.h"
 
 class Appearance : public Component {
     char ch;

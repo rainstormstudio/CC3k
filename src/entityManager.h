@@ -13,7 +13,7 @@ public:
     void destroy();
     void update();
     void render(Graphics * gfx);
-    Entity* addEntity(std::string name, LayerType layer);
+    Entity& addEntity(std::string name, LayerType layer);
     
     std::vector<Entity*> getEntitiesByLayer(LayerType layer) const;
     Entity* getEntityByName(std::string name) const;

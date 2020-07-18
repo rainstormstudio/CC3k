@@ -7,7 +7,7 @@ void EntityManager::destroy() {
 }
 
 void EntityManager::update() {
-    for (int i = 0; i < entities.size(); ++i) {
+    for (unsigned int i = 0; i < entities.size(); ++i) {
         if (entities[i]->isAlive()) {
             entities[i]->update();
         } else {
@@ -24,10 +24,10 @@ void EntityManager::render(Graphics* gfx) {
     }
 }
 
-Entity* EntityManager::addEntity(std::string name, LayerType layer) {
+Entity& EntityManager::addEntity(std::string name, LayerType layer) {
     Entity *entity = new Entity(name, layer);
     entities.emplace_back(entity);
-    return entity;
+    return *entity;
 }
 
 std::vector<Entity*> EntityManager::getEntitiesByLayer(LayerType layer) const {

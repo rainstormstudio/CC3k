@@ -2,6 +2,7 @@
 #include "config.h"
 #include "entityManager.h"
 #include "graphics.h"
+#include "componentList.h"
 
 Game::Game() {
     isRunning = false;
@@ -19,6 +20,9 @@ bool Game::loop() const {
 void Game::init() {
     gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
     manager = new EntityManager();
+    Entity player = manager->addEntity("Player", PLAYER_LAYER);
+    player.addComponent<Transform>(20, 20);
+    player.addComponent<Appearance>('@');
     isRunning = true;
 }
 
@@ -27,9 +31,9 @@ void Game::processInput() {
 }
 
 void Game::update() {
-
+    manager->update();
 }
 
 void Game::render() {
-
+    manager->render(gfx);
 }
