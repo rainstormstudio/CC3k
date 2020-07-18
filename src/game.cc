@@ -24,8 +24,10 @@ void Game::init() {
     Entity * player = manager->addEntity("Player", PLAYER_LAYER);
     player->addComponent<Transform>(20, 5);
     player->addComponent<Appearance>('@');
+    player->addComponent<Attributes>("Human", 20, 15, 18);
     Entity * map = manager->addEntity("Map", MAP_LAYER);
     map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
+    map->getComponent<Floor>()->import("./maps/default.map");
     isRunning = true;
 }
 
