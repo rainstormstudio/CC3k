@@ -11,6 +11,7 @@ Game::Game() {
 
 Game::~Game() {
     delete gfx;
+    delete manager;
 }
 
 bool Game::loop() const {
@@ -21,13 +22,14 @@ void Game::init() {
     gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
     manager = new EntityManager();
     Entity player = manager->addEntity("Player", PLAYER_LAYER);
-    player.addComponent<Transform>(20, 20);
+    player.addComponent<Transform>(20, 5);
     player.addComponent<Appearance>('@');
     isRunning = true;
 }
 
 void Game::processInput() {
-    
+    char ch;
+    std::cin >> ch;
 }
 
 void Game::update() {

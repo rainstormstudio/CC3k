@@ -30,23 +30,3 @@ bool Entity::isAlive() const {
 void Entity::destroy() {
     isActive = false;
 }
-
-template <typename T, typename... Targs>
-T& Entity::addComponent(Targs&&... args) {
-    T* component = new T(std::forward<T>(args)...);
-    component->owner = this;
-    components.emplace_back(component);
-    componentTypes[&typeid(*component)] = component;
-    component->init();
-    return *component;
-}
-
-template <typename T>
-bool Entity::hasComponent() const {
-    return static_cast<bool>(componentTypes.count(&typeid(T)));
-}
-
-template <typename T>
-T* Entity::getComponent() {
-    return static_cast<T*>(componentTypes[&typeid(T)]);
-}

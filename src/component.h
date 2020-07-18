@@ -7,9 +7,9 @@ class Graphics;
 class Component {
 public:
     Entity * owner;
-    virtual void init();
-    virtual void update();
-    virtual void render(Graphics * gfx);
+    virtual void init() {}
+    virtual void update() {}
+    virtual void render(Graphics * gfx) {}
 };
 
 #endif

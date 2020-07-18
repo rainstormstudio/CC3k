@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include "types.h"
+#include <typeinfo>
 
 class Component;
 class Graphics;
@@ -25,14 +26,25 @@ public:
     bool isAlive() const;
     void destroy();
 
-    template <typename T, typename... Targs>
-    T& addComponent(Targs&&... args);
+    template <typename T, typename... TArgs>
+    T& addComponent(TArgs&&... args) {
+        T* component = new T(std::forward<TArgs>(args)...);
+        component->owner = this;
+        components.emplace_back(component);
+        componentTypes[&typeid(*component)] = component;
+        component->init();
+        return *component;
+    }
 
     template <typename T>
-    bool hasComponent() const;
+    bool hasComponent() const {
+        return static_cast<bool>(componentTypes.count(&typeid(T)));
+    }
 
     template <typename T>
-    T* getComponent();
+    T* getComponent() {
+        return static_cast<T*>(componentTypes[&typeid(T)]);
+    }
 };
 
 #endif
