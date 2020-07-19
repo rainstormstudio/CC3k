@@ -18,6 +18,7 @@ public:
     void render();
 
     void draw(char value, int x, int y);
+    void drawImage(std::string filename);
     void write(std::string content, int x, int y);
 };
 

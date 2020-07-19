@@ -8,10 +8,12 @@
 #include <typeinfo>
 
 class Component;
+class EntityManager;
 class Graphics;
 class InputManager;
 
 class Entity {
+    EntityManager& manager;
     bool isActive;
     std::map<const std::type_info*, Component*> componentTypes;
 public:
@@ -19,9 +21,11 @@ public:
     std::string name;
     LayerType layer;
 
-    Entity();
+    Entity(EntityManager & manager);
+    Entity(EntityManager & manager, std::string name, LayerType layer);
+    
     ~Entity();
-    Entity(std::string name, LayerType layer);
+    
     void update(InputManager * events);
     void render(Graphics * gfx);
 

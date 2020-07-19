@@ -1,6 +1,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <vector>
+#include <string>
+
 struct Vec2 {
     int x = 0;
     int y = 0;
@@ -34,6 +37,16 @@ struct Vec2 {
     bool operator!=(const Vec2 &v) {
         return !(x == v.x && y == v.y);
     }
+};
+
+struct PlayerRace {
+    std::string name;
+    std::string symbol;
+    unsigned int hp;
+    unsigned int maxHp;
+    unsigned int atk;
+    unsigned int def;
+    std::vector<std::string> skills;
 };
 
 enum LayerType {

@@ -25,7 +25,7 @@ void EntityManager::render(Graphics* gfx) {
 }
 
 Entity* EntityManager::addEntity(std::string name, LayerType layer) {
-    Entity *entity = new Entity(name, layer);
+    Entity *entity = new Entity(*this, name, layer);
     entities.emplace_back(entity);
     return entity;
 }

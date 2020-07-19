@@ -1,9 +1,10 @@
 #include "entity.h"
 #include "component.h"
+#include "entityManager.h"
 #include "graphics.h"
 #include "inputManager.h"
 
-Entity::Entity() {
+Entity::Entity(EntityManager & manager) : manager{manager} {
     isActive = true;
 }
 
@@ -13,8 +14,8 @@ Entity::~Entity() {
     }
 }
 
-Entity::Entity(std::string name, LayerType layer) 
-    : name{name}, layer{layer} {
+Entity::Entity(EntityManager & manager, std::string name, LayerType layer) 
+    : manager{manager}, name{name}, layer{layer} {
     isActive = true;
 }
 

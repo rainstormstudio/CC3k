@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "types.h"
+
 class Graphics;
 class InputManager;
 class EntityManager;
@@ -11,6 +13,7 @@ private:
     Graphics * gfx;
     InputManager * events;
     EntityManager * manager;
+    std::vector<PlayerRace> playerRace;
 
 public:
     Game();
@@ -18,6 +21,7 @@ public:
 
     bool loop() const;
     void init();
+    void importPlayerRace();
     void processInput();
     void update();
     void render();

@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include <fstream>
 
 Graphics::Graphics(int width, int height)
     : screen_width{width}, screen_height{height} {
@@ -30,6 +31,22 @@ void Graphics::render() {
 
 void Graphics::draw(char value, int x, int y) {
     theDisplay[x][y] = value;
+}
+
+void Graphics::drawImage(std::string filename) {
+    std::string line;
+    std::ifstream infile {filename};
+    if (infile.is_open()) {
+        int row = 0;
+        while (std::getline(infile, line)) {
+            int len = line.length();
+            for (int i = 0; i < len && i < screen_width; ++i) {
+                theDisplay[row][i] = line[i];
+            }
+            ++row;
+        }
+        infile.close();
+    }
 }
 
 void Graphics::write(std::string content, int x, int y) {

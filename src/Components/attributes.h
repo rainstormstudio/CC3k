@@ -24,7 +24,7 @@ public:
 
     void incHP(int value) { 
         hp += value; 
-        if (hp > maxHp) hp = maxHp;
+        if (maxHp != 0 && hp > maxHp) hp = maxHp;
     }
 
     void incMaxHP( int value) { maxHp += value; }
