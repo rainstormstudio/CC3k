@@ -53,6 +53,30 @@ Note that the PC’s Atk and Def can never drop below 0.
 * r: restarts the game. All stats, inventory, and gold are reset. A new race should be selected.
 * q: allows the player to admit defeat and exit the game.
 Note that the board should be redrawn as appropriate every time a command is entered.
+## Configuration
+### command.conf format
+- move north
+- move south
+- move east
+- move west
+- move north-east
+- move north-west
+- move south-east
+- move south-west
+- use potion
+- attack
+- stop enemy movement
+- restart game
+- quit game
+### playerRace.conf
+every race should follow the following format:
+- race name
+- race symbol
+- starting hp
+- maximum hp
+- attack point
+- defence point
+- a list of skills names, end with a '!' mark
 ## Command Line options
     ...
 ## Prerequisites
