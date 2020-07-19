@@ -73,6 +73,8 @@ void Game::init() {
             if (skills[i].substr(0, 11) == "SelfHealing") {
                 int value = std::stoi(skills[i].substr(12, skills[i].size() - 12));
                 player->addComponent<SelfHealing>(value);
+            } else if (skills[i] == "NoMaxHP") {
+                player->addComponent<NoMaxHP>();
             }
         }
     }

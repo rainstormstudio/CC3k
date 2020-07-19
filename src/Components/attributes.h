@@ -23,6 +23,11 @@ public:
     int getAtk() const { return atk; }
     int getDef() const { return def; }
 
+    void setHP(int value) { hp = value; }
+    void setMaxHP(int value) { maxHp = value; }
+    void setAtk(int value) { atk = value; }
+    void setDef(int value) { def = value; }
+
     void incHP(int value) { 
         hp += value; 
         if (hp > maxHp) hp = maxHp;
