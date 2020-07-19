@@ -11,6 +11,7 @@ void EntityManager::update(InputManager * events) {
         if (entities[i]->isAlive()) {
             entities[i]->update(events);
         } else {
+            delete entities[i];
             entities.erase(entities.begin() + i);
         }
     }
