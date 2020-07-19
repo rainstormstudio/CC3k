@@ -53,6 +53,9 @@ Note that the PC’s Atk and Def can never drop below 0.
 * r: restarts the game. All stats, inventory, and gold are reset. A new race should be selected.
 * q: allows the player to admit defeat and exit the game.
 Note that the board should be redrawn as appropriate every time a command is entered.
+## assets
+- lost.txt: the death screen image
+- welcome.txt: the welcome screen image
 ## Configuration
 ### command.conf format
 - move north
@@ -68,21 +71,21 @@ Note that the board should be redrawn as appropriate every time a command is ent
 - stop enemy movement
 - restart game
 - quit game
-### playerRace.conf
+### playerRace.conf format
 every race should follow the following format:
 - race name
 - race symbol
 - starting hp
 - maximum hp
 - attack point
-- defence point
+- defense point
 - a list of skills names, end with a '!' mark
 ## Command Line options
     ...
 ## Prerequisites
     ...
 ## Installings
-    ...
+    use make command at the root directory
 ## Author
 Daniel Hongyu Ding
 ## References
