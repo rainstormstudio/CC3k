@@ -6,6 +6,7 @@
 #include "../floor.h"
 #include "../actions.h"
 #include <string>
+#include <vector>
 #include "../../math.h"
 
 const std::string directions[8] = {
@@ -16,7 +17,7 @@ const std::string directions[8] = {
     "North-East",
     "North-West",
     "South-East",
-    "South-West",
+    "South-West"
 };
 
 class Movement : public Component {
@@ -38,10 +39,22 @@ public:
             if (events->getInputType() >= NORTH && events->getInputType() <= SOUTHWEST) {         
                 direction = directions[events->getInputType()];
                 Actions * action = owner->getComponent<Actions>();
-                if (floor->isWall(
-                    transform->position.x + Math::deltaX[events->getInputType()],
-                    transform->position.y + Math::deltaY[events->getInputType()])) {
-                    action->setAction("PC tried to go " + direction + " but stoped by a wall.");
+                std::vector<Entity*> enemies = owner->manager.getEntitiesByLayer(ENEMY_LAYER);
+                bool collision = false;
+                int dirX = transform->position.x + Math::deltaX[events->getExtraInputType()];
+                int dirY = transform->position.y + Math::deltaY[events->getExtraInputType()];
+                for (auto& enemy : enemies) {
+                    Transform* enemyTransform = enemy->getComponent<Transform>();
+                    if (enemyTransform->position.x == dirX && enemyTransform->position.y == dirY) {
+                        collision = true;
+                        break;
+                    }
+                }
+                if (floor->isWall(dirX, dirY)) {
+                    action->setAction("PC tried to go " + direction + " but stopped by a wall.");
+                    direction = "";
+                } else if (collision) {
+                    action->setAction("PC tried to go " + direction + " but stopped by the enemy");
                     direction = "";
                 } else {
                     transform->position.x += Math::deltaX[events->getInputType()];
@@ -69,9 +82,24 @@ public:
                     transform->position.y + Math::deltaY[dir])) {
                     dir = Math::random(0, 7);
                 }
-                direction = directions[dir];
-                transform->position.x += Math::deltaX[dir];
-                transform->position.y += Math::deltaY[dir]; 
+                int dirX = transform->position.x + Math::deltaX[dir];
+                int dirY = transform->position.y + Math::deltaY[dir];
+
+                std::vector<Entity*> entities = owner->manager.getEntitiesByLayer(ENEMY_LAYER);
+                bool collision = false;
+                for (auto& entity : entities) {
+                    if (entity != owner) {
+                        Transform* entityTransform = entity->getComponent<Transform>();
+                        if (entityTransform->position.x == dirX && entityTransform->position.y == dirY) {
+                            collision = true;
+                            break;
+                        }
+                    }
+                }
+                if (!collision) {
+                    transform->position.x += Math::deltaX[dir];
+                    transform->position.y += Math::deltaY[dir]; 
+                }
             }
         }
     }
