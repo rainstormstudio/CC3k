@@ -7,6 +7,7 @@
 class Appearance : public Component {
     char ch;
 public:
+    Appearance() : ch{0} {}
     Appearance(char ch) : ch{ch} {}
     char getAppearance() const { return ch; }
     void setAppearance(char newChar) { ch = newChar; }

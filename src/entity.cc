@@ -20,8 +20,8 @@ Entity::Entity(EntityManager & manager, std::string name, LayerType layer)
 }
 
 void Entity::update(InputManager * events) {
-    for (auto& component : components) {
-        component->update(events);
+    for (int i = 0; i < static_cast<int>(components.size()); ++i) {
+        components[i]->update(events);
     }
 }
 

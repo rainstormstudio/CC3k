@@ -11,12 +11,16 @@
 
 class Attack : public Component {
     bool hasControl;
+    bool successfulAttack;
 public:
-    Attack(bool hasControl) : hasControl{hasControl} {}
+    Attack(bool hasControl) : hasControl{hasControl}, successfulAttack{false} {}
 
     void init() override {}
 
+    bool attacked() const {return successfulAttack;}
+
     void update(InputManager * events) override {
+        successfulAttack = false;
         Transform * transform = owner->getComponent<Transform>();
         Attributes * attributes = owner->getComponent<Attributes>();
         Appearance * appearance = owner->getComponent<Appearance>();
@@ -25,12 +29,11 @@ public:
                 int attackX = transform->position.x + Math::deltaX[events->getExtraInputType()];
                 int attackY = transform->position.y + Math::deltaY[events->getExtraInputType()];
                 auto entities = owner->manager.getEntitiesByLayer(ENEMY_LAYER);
-                bool successfulAttack = false;
                 bool kill = false;
                 int damage = 0;
                 Actions * actions = owner->getComponent<Actions>();
-                Appearance * entityAppearance;
-                Attributes * entityAttributes;
+                Appearance * entityAppearance = nullptr;
+                Attributes * entityAttributes = nullptr;
                 for (auto& entity : entities) {
                     Transform * entityTransform = entity->getComponent<Transform>();
                     entityAttributes = entity->getComponent<Attributes>();
@@ -68,7 +71,7 @@ public:
             for (int i = 0; i < 8; ++i) {
                 if (playerTransform->position.x == transform->position.x + Math::deltaX[i]
                     && playerTransform->position.y == transform->position.y + Math::deltaY[i]) {
-                    bool successfulAttack = static_cast<bool>(Math::random(0, 1));
+                    successfulAttack = static_cast<bool>(Math::random(0, 1));
                     if (successfulAttack) {
                         int damage = ceil(static_cast<float>((100.0/(100.0 + playerAttributes->getDef())) * attributes->getAtk()));
                         playerAttributes->incHP(-damage);
