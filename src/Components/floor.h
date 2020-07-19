@@ -36,6 +36,9 @@ public:
         }
     }
 
+    int getMapWidth() const { return map_width; }
+    int getMapHeight() const { return map_height; }
+
     void reset() {
         num = 1;
         for (int i = 0; i < map_height; ++i) {
@@ -78,7 +81,18 @@ public:
     }
 
     bool isWall(int x, int y) {
+        if (x < 0 || x >= map_width || y < 0 || y >= map_height) {
+            return false;
+        }
         if (map[y][x] == '|' || map[y][x] == '-' || map[y][x] == ' ') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    bool isChamber(int x, int y) {
+        if (map[y][x] == '.') {
             return true;
         } else {
             return false;

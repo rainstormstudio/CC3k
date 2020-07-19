@@ -58,12 +58,12 @@ void Game::init() {
             std::cout << "undefined symbol, please try again:" << std::endl;
         }
     }
-    Entity * map = manager->addEntity("Map", MAP_LAYER); {
+    Entity* map = manager->addEntity("Map", MAP_LAYER); {
         map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
         map->getComponent<Floor>()->import("./maps/default.map");
     }
-    Entity * player = manager->addEntity("Player", PLAYER_LAYER); {
-        player->addComponent<Transform>(20, 5);
+    Entity* player = manager->addEntity("Player", PLAYER_LAYER); {
+        player->addComponent<Transform>();
         player->addComponent<Appearance>('@');
         player->addComponent<Attributes>(raceName, playerHP, playerMaxHP, playerAtk, playerDef);
         player->addComponent<Wallet>();
@@ -82,8 +82,8 @@ void Game::init() {
             }
         }
     }
-    Entity * enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
-        enemy->addComponent<Transform>(16, 4);
+    Entity* enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
+        enemy->addComponent<Transform>();
         enemy->addComponent<Appearance>('H');
         enemy->addComponent<Attributes>("Human", 100, 100, 30, 20);
         enemy->addComponent<Movement>(false);

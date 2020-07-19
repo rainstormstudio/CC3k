@@ -2,3 +2,5 @@
 .vscode/
 *.o
 *.d
+
+src/.cquery_cached_index/

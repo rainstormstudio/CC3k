@@ -17,6 +17,7 @@ public:
     void render(Graphics * gfx);
     Entity* addEntity(std::string name, LayerType layer);
     
+    std::vector<Entity*> getEntities() const;
     std::vector<Entity*> getEntitiesByLayer(LayerType layer) const;
     Entity* getEntityByName(std::string name) const;
     

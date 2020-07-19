@@ -32,6 +32,10 @@ Entity* EntityManager::addEntity(std::string name, LayerType layer) {
     return entity;
 }
 
+std::vector<Entity*> EntityManager::getEntities() const {
+    return entities;
+}
+
 std::vector<Entity*> EntityManager::getEntitiesByLayer(LayerType layer) const {
     std::vector<Entity*> theEntities;
     for (auto& entity: entities){
