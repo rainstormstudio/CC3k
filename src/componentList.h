@@ -5,3 +5,4 @@
 #include "./Components/actions.h"
 #include "./Components/abilities/movement.h"
 #include "./Components/abilities/attack.h"
+#include "./Components/abilities/selfHealing.h"

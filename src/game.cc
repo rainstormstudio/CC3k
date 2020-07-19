@@ -35,11 +35,12 @@ void Game::init() {
     }
     gfx->render();
     bool successfulInput = false;
-    std::string raceName;
-    int playerHP;
-    int playerMaxHP;
-    int playerAtk;
-    int playerDef;
+    std::string raceName = "";
+    int playerHP = 0;
+    int playerMaxHP = 0;
+    int playerAtk = 0;
+    int playerDef = 0;
+    std::vector<std::string> skills;
     while (!successfulInput) {
         events->update();
         for (auto& race : playerRace) {
@@ -49,6 +50,7 @@ void Game::init() {
                 playerMaxHP = race.maxHp;
                 playerAtk = race.atk;
                 playerDef = race.def;
+                skills = race.skills;
                 successfulInput = true;
             }
         }
@@ -67,6 +69,12 @@ void Game::init() {
         player->addComponent<Actions>();
         player->addComponent<Movement>(true);
         player->addComponent<Attack>(true);
+        for (int i = 0; i < static_cast<int>(skills.size()); ++i) {
+            if (skills[i].substr(0, 11) == "SelfHealing") {
+                int value = std::stoi(skills[i].substr(12, skills[i].size() - 12));
+                player->addComponent<SelfHealing>(value);
+            }
+        }
     }
     Entity * enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
         enemy->addComponent<Transform>(16, 4);
