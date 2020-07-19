@@ -21,6 +21,9 @@ public:
 
     void update(InputManager * events) override {
         successfulAttack = false;
+        if (!owner->isAlive()) {
+            return;
+        }
         Transform * transform = owner->getComponent<Transform>();
         Attributes * attributes = owner->getComponent<Attributes>();
         Appearance * appearance = owner->getComponent<Appearance>();
