@@ -13,10 +13,11 @@ class Graphics;
 class InputManager;
 
 class Entity {
-    EntityManager& manager;
     bool isActive;
     std::map<const std::type_info*, Component*> componentTypes;
 public:
+    EntityManager& manager;
+    
     std::vector<Component*> components;
     std::string name;
     LayerType layer;

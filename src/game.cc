@@ -36,10 +36,10 @@ void Game::init() {
     gfx->render();
     bool successfulInput = false;
     std::string raceName;
-    unsigned int playerHP;
-    unsigned int playerMaxHP;
-    unsigned int playerAtk;
-    unsigned int playerDef;
+    int playerHP;
+    int playerMaxHP;
+    int playerAtk;
+    int playerDef;
     while (!successfulInput) {
         events->update();
         for (auto& race : playerRace) {
@@ -53,7 +53,7 @@ void Game::init() {
             }
         }
         if (!successfulInput) {
-            std::cout << "undefined symbol" << std::endl;
+            std::cout << "undefined symbol, please try again:" << std::endl;
         }
     }
     Entity * map = manager->addEntity("Map", MAP_LAYER); {
@@ -66,12 +66,14 @@ void Game::init() {
         player->addComponent<Attributes>(raceName, playerHP, playerMaxHP, playerAtk, playerDef);
         player->addComponent<Actions>();
         player->addComponent<Movement>(map->getComponent<Floor>(), true);
+        player->addComponent<Attack>(true);
     }
     Entity * enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
         enemy->addComponent<Transform>(16, 4);
         enemy->addComponent<Appearance>('H');
-        enemy->addComponent<Attributes>("Human", 20, 20, 15, 18);
+        enemy->addComponent<Attributes>("Human", 60, 60, 15, 18);
         enemy->addComponent<Movement>(map->getComponent<Floor>(), false);
+        enemy->addComponent<Attack>(false);
     }
     isRunning = true;
 }

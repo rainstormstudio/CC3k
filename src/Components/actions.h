@@ -15,7 +15,7 @@ public:
     void update(InputManager * events) override {}
 
     void setAction(std::string done) {
-        action += done;
+        action += done + " ";
     }
 
     void render(Graphics * gfx) override {

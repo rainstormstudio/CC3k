@@ -8,9 +8,6 @@
 #include <string>
 #include "../../math.h"
 
-const int deltaX[8] = {0, 0, 1, -1, 1, -1, 1, -1};
-const int deltaY[8] = {-1, 1, 0, 0, -1, -1, 1, 1};
-
 const std::string directions[8] = {
     "North",
     "South",
@@ -41,28 +38,40 @@ public:
                 direction = directions[events->getInputType()];
                 Actions * action = owner->getComponent<Actions>();
                 if (floor->isWall(
-                    transform->position.x + deltaX[events->getInputType()],
-                    transform->position.y + deltaY[events->getInputType()])) {
+                    transform->position.x + Math::deltaX[events->getInputType()],
+                    transform->position.y + Math::deltaY[events->getInputType()])) {
                     action->setAction("PC tried to go " + direction + " but stoped by a wall.");
                     direction = "";
                 } else {
-                    transform->position.x += deltaX[events->getInputType()];
-                    transform->position.y += deltaY[events->getInputType()];
-                    action->setAction("PC went " + direction);
+                    transform->position.x += Math::deltaX[events->getInputType()];
+                    transform->position.y += Math::deltaY[events->getInputType()];
+                    action->setAction("PC went " + direction + ".");
                 }
             } else {
                 direction = "";
             }
         } else {
-            int dir = Math::random(0, 7);
-            while (floor->isWall(
-                transform->position.x + deltaX[dir],
-                transform->position.y + deltaY[dir])) {
-                dir = Math::random(0, 7);
+            Entity* player = owner->manager.getEntityByName("Player");
+            Transform * playerTransform = player->getComponent<Transform>();
+            bool shouldMove = true;
+            for (int i = 0; i < 8; i++) {
+                if (playerTransform->position.x == transform->position.x + Math::deltaX[i]
+                    && playerTransform->position.y == transform->position.y + Math::deltaY[i]) {
+                    shouldMove = false;
+                    break;
+                }
             }
-            direction = directions[dir];
-            transform->position.x += deltaX[dir];
-            transform->position.y += deltaY[dir]; 
+            if (shouldMove) {
+                int dir = Math::random(0, 7);
+                while (floor->isWall(
+                    transform->position.x + Math::deltaX[dir],
+                    transform->position.y + Math::deltaY[dir])) {
+                    dir = Math::random(0, 7);
+                }
+                direction = directions[dir];
+                transform->position.x += Math::deltaX[dir];
+                transform->position.y += Math::deltaY[dir]; 
+            }
         }
     }
 

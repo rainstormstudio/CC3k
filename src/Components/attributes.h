@@ -5,26 +5,27 @@
 
 class Attributes : public Component {
     std::string race;
-    unsigned int hp;
-    unsigned int maxHp;
-    unsigned int atk;
-    unsigned int def;
+    int hp;
+    int maxHp;
+    int atk;
+    int def;
 public:
     Attributes() : race{"Shade"}, hp{125}, maxHp{125}, atk{25}, def{25} {}
-    Attributes(std::string race, unsigned int hp, unsigned int maxHp, 
-                unsigned int atk, unsigned int def)
+    Attributes(std::string race, int hp, int maxHp, 
+                int atk, int def)
         : race{race}, hp{hp}, maxHp{maxHp}, 
             atk{atk}, def{def} {
     }
 
-    unsigned int getHP() const { return hp; }
-    unsigned int getMaxHP() const { return maxHp; }
-    unsigned int getAtk() const { return atk; }
-    unsigned int getDef() const { return def; }
+    std::string getRace() const { return race; }
+    int getHP() const { return hp; }
+    int getMaxHP() const { return maxHp; }
+    int getAtk() const { return atk; }
+    int getDef() const { return def; }
 
     void incHP(int value) { 
         hp += value; 
-        if (maxHp != 0 && hp > maxHp) hp = maxHp;
+        if (hp > maxHp) hp = maxHp;
     }
 
     void incMaxHP( int value) { maxHp += value; }

@@ -9,6 +9,7 @@
 #include "inputManager.h"
 
 class EntityManager {
+protected:
     std::vector<Entity*> entities;
 public:
     void destroy();

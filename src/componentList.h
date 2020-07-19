@@ -4,3 +4,4 @@
 #include "./Components/attributes.h"
 #include "./Components/actions.h"
 #include "./Components/abilities/movement.h"
+#include "./Components/abilities/attack.h"
