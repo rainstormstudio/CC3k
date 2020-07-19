@@ -65,14 +65,14 @@ void Game::init() {
         player->addComponent<Appearance>('@');
         player->addComponent<Attributes>(raceName, playerHP, playerMaxHP, playerAtk, playerDef);
         player->addComponent<Actions>();
-        player->addComponent<Movement>(map->getComponent<Floor>(), true);
+        player->addComponent<Movement>(true);
         player->addComponent<Attack>(true);
     }
     Entity * enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
         enemy->addComponent<Transform>(16, 4);
         enemy->addComponent<Appearance>('H');
         enemy->addComponent<Attributes>("Human", 60, 60, 15, 18);
-        enemy->addComponent<Movement>(map->getComponent<Floor>(), false);
+        enemy->addComponent<Movement>(false);
         enemy->addComponent<Attack>(false);
     }
     isRunning = true;

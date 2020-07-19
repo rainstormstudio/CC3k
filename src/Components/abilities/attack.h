@@ -50,7 +50,7 @@ public:
                 }
                 if (successfulAttack) {
                     if (kill) {
-                        actions->setAction("PC killed " + std::string(1, entityAppearance->getAppearance()));
+                        actions->setAction("PC killed " + std::string(1, entityAppearance->getAppearance()) + ".");
                     } else {
                         actions->setAction("PC deals " + std::to_string(damage) + " damage to " 
                                             + std::string(1, entityAppearance->getAppearance()) 

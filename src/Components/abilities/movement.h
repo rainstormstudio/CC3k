@@ -20,12 +20,11 @@ const std::string directions[8] = {
 };
 
 class Movement : public Component {
-    Floor * floor;
     std::string direction;
     bool hasControl;
 public:
-    Movement(Floor * floor, bool hasControl) 
-        : floor{floor}, hasControl{hasControl} {}
+    Movement(bool hasControl) 
+        : hasControl{hasControl} {}
 
     void init() override {
         direction = "";
@@ -33,6 +32,8 @@ public:
     
     void update(InputManager * events) override {
         Transform * transform = owner->getComponent<Transform>();
+        Entity* map = owner->manager.getEntityByName("Map");
+        Floor * floor = map->getComponent<Floor>();
         if (hasControl) {
             if (events->getInputType() >= NORTH && events->getInputType() <= SOUTHWEST) {         
                 direction = directions[events->getInputType()];
