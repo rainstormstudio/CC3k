@@ -75,4 +75,11 @@ enum CommandType {
     TOTAL_COMMANDS
 };
 
+enum GameState {
+    NO_GAME,
+    IN_GAME,
+    WON_GAME,
+    LOST_GAME
+};
+
 #endif

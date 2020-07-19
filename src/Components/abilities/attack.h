@@ -54,7 +54,7 @@ public:
                     } else {
                         actions->setAction("PC deals " + std::to_string(damage) + " damage to " 
                                             + std::string(1, entityAppearance->getAppearance()) 
-                                            + " (" + std::to_string(entityAttributes->getHP()) + ").");
+                                            + " (" + std::to_string(entityAttributes->getHP()) + " HP).");
                     }
                 } else {
                     actions->setAction("There is nothing to be attacked at that direction.");
@@ -72,14 +72,24 @@ public:
                     if (successfulAttack) {
                         int damage = ceil(static_cast<float>((100.0/(100.0 + playerAttributes->getDef())) * attributes->getAtk()));
                         playerAttributes->incHP(-damage);
-                        playerActions->setAction(
-                            std::string(1, appearance->getAppearance()) + " deals "
-                            + std::to_string(damage) + " damage to PC.");
+                        bool kill = false;
+                        if (playerAttributes->getHP() <= 0) {
+                            player->destroy();
+                            kill = true;
+                        }
+                        if (kill) {
+                            playerActions->setAction(std::string(1, appearance->getAppearance()) + " killed PC.");
+                        } else {
+                            playerActions->setAction(
+                                std::string(1, appearance->getAppearance()) + " deals "
+                                + std::to_string(damage) + " damage to PC.");
+                        }
                     } else {
                         playerActions->setAction(
                             std::string(1, appearance->getAppearance()) 
                             + " tried to attack PC but missed.");
                     }
+                    break;
                 }
             }
         }

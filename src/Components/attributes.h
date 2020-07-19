@@ -38,10 +38,12 @@ public:
     void update(InputManager * events) override {}
 
     void render(Graphics * gfx) override {
-        gfx->write("Race: " + race, 0, gfx->screen_height - 5);
-        gfx->write("HP: " + std::to_string(hp), 0, gfx->screen_height - 4);
-        gfx->write("Atk: " + std::to_string(atk), 0, gfx->screen_height - 3);
-        gfx->write("Def: " + std::to_string(def), 0, gfx->screen_height - 2);
+        if (owner->name == "Player") {
+            gfx->write("Race: " + race, 0, gfx->screen_height - 5);
+            gfx->write("HP: " + std::to_string(hp), 0, gfx->screen_height - 4);
+            gfx->write("Atk: " + std::to_string(atk), 0, gfx->screen_height - 3);
+            gfx->write("Def: " + std::to_string(def), 0, gfx->screen_height - 2);
+        }
     }
 
     ~Attributes() override {}

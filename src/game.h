@@ -9,7 +9,7 @@ class EntityManager;
 
 class Game {
 private:
-    bool isRunning;
+    GameState state;
     Graphics * gfx;
     InputManager * events;
     EntityManager * manager;
