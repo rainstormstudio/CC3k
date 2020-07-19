@@ -66,6 +66,7 @@ void Game::init() {
         player->addComponent<Transform>(20, 5);
         player->addComponent<Appearance>('@');
         player->addComponent<Attributes>(raceName, playerHP, playerMaxHP, playerAtk, playerDef);
+        player->addComponent<Wallet>();
         player->addComponent<Actions>();
         player->addComponent<Movement>(true);
         player->addComponent<Attack>(true);
