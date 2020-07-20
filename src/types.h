@@ -49,6 +49,17 @@ struct PlayerRace {
     std::vector<std::string> skills;
 };
 
+struct EnemyRace {
+    std::string name;
+    std::string symbol;
+    unsigned int spawnWeight;
+    unsigned int hp;
+    unsigned int maxHp;
+    unsigned int atk;
+    unsigned int def;
+    std::vector<std::string> skills;
+};
+
 enum LayerType {
     MAP_LAYER,
     ITEM_LAYER,

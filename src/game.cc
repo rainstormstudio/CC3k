@@ -29,6 +29,11 @@ void Game::init() {
     events = new InputManager();
     manager = new EntityManager();
     importPlayerRace();
+    importEnemyRace();
+    int enemyWeightTotal = 0;
+    for (int i = 0; i < static_cast<int>(enemyRace.size()); ++i) {
+        enemyWeightTotal += enemyRace[i].spawnWeight;
+    }
     gfx->write("Please choose your race", 0, gfx->screen_height - 5);
     int deltaHeight = 5;
     for (unsigned int i = 0; i < playerRace.size(); ++i) {
@@ -91,13 +96,33 @@ void Game::init() {
             }
         }
     }
-    Entity* enemy = manager->addEntity("Enemy", ENEMY_LAYER); {
-        enemy->addComponent<Transform>();
-        enemy->addComponent<Appearance>('H');
-        enemy->addComponent<Attributes>("Human", 100, 100, 30, 20);
-        enemy->addComponent<Movement>(false);
-        enemy->addComponent<Attack>(false);
+
+    for (int i = 0; i < 20; ++i) {
+        int picked = Math::random(1, enemyWeightTotal);
+        EnemyRace * pickedEnemy = nullptr;
+        for (int j = 0; j < static_cast<int>(enemyRace.size()); ++j) {
+            picked -= enemyRace[j].spawnWeight;
+            if (picked < 0) {
+                pickedEnemy = &enemyRace[j];
+                break;
+            }
+        }
+        Entity* enemy = manager->addEntity("Enemy" + std::to_string(i), ENEMY_LAYER); {
+            enemy->addComponent<Transform>();
+            enemy->addComponent<Appearance>(pickedEnemy->symbol[0]);
+            enemy->addComponent<Attributes>(pickedEnemy->name, 
+                                            pickedEnemy->hp, 
+                                            pickedEnemy->maxHp, 
+                                            pickedEnemy->atk, 
+                                            pickedEnemy->def);
+            enemy->addComponent<Movement>(false);
+            enemy->addComponent<Attack>(false);
+            for (int j = 0; j < static_cast<int>(pickedEnemy->skills.size()); ++j) {
+                // TODO: add enemy skills here
+            }
+        }
     }
+    
     state = IN_GAME;
 }
 
@@ -130,6 +155,45 @@ void Game::importPlayerRace() {
             playerRace.push_back(race);
         }
         infile.close();
+    } else {
+        std::cout << "Error importing player race config file." << std::endl;
+    }
+}
+
+void Game::importEnemyRace() {
+    std::string line;
+    std::ifstream infile {"./configs/enemyRace.conf"};
+    if (infile.is_open()) {
+        while (std::getline(infile, line)) {
+            std::string raceName = "";
+            std::string symbol;
+            unsigned int spawnWeight;
+            unsigned int hp;
+            unsigned int maxHp;
+            unsigned int atk;
+            unsigned int def;
+            raceName = line;
+            getline(infile, line);
+            symbol = line;
+            getline(infile, line);
+            spawnWeight = std::stoi(line);
+            getline(infile, line);
+            hp = std::stoi(line);
+            getline(infile, line);
+            maxHp = std::stoi(line);
+            getline(infile, line);
+            atk = std::stoi(line);
+            getline(infile, line);
+            def = std::stoi(line);
+            EnemyRace race = {raceName, symbol, spawnWeight, hp, maxHp, atk, def};
+            while (getline(infile, line) && line != "!") {
+                race.skills.emplace_back(line);
+            }
+            enemyRace.push_back(race);
+        }
+        infile.close();
+    } else {
+        std::cout << "Error importing enemy race config file." << std::endl;
     }
 }
 

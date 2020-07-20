@@ -14,6 +14,7 @@ private:
     InputManager * events;
     EntityManager * manager;
     std::vector<PlayerRace> playerRace;
+    std::vector<EnemyRace> enemyRace;
 
 public:
     Game();
@@ -22,6 +23,7 @@ public:
     bool loop() const;
     void init();
     void importPlayerRace();
+    void importEnemyRace();
     void processInput();
     void update();
     void render();
