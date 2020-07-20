@@ -80,6 +80,16 @@ every race should follow the following format:
 - attack point
 - defense point
 - a list of skills names, end with a '!' mark
+### enemyRace.conf format
+every enemy race should follow the following format:
+- race name
+- race symbol
+- spawn weight
+- starting hp
+- maximum hp
+- attack point
+- defense point
+- a list of skills names, end with a '!' mark
 ## Command Line options
     ...
 ## Prerequisites
