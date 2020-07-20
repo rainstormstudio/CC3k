@@ -30,9 +30,14 @@ void Game::init() {
     manager = new EntityManager();
     importPlayerRace();
     gfx->write("Please choose your race", 0, gfx->screen_height - 5);
+    int deltaHeight = 5;
     for (unsigned int i = 0; i < playerRace.size(); ++i) {
-        gfx->write(playerRace[i].name + "(" + playerRace[i].symbol + ")", i * 15, gfx->screen_height - 4);
+        if ((i * 15) % 75 == 0) {
+            deltaHeight --;
+        }
+        gfx->write(playerRace[i].name + "(" + playerRace[i].symbol + ")", (i * 15) % 75, gfx->screen_height - deltaHeight);
     }
+    gfx->write("or type q to quit the game.", 0, gfx->screen_height - 1);
     gfx->render();
     bool successfulInput = false;
     std::string raceName = "";
@@ -53,6 +58,10 @@ void Game::init() {
                 skills = race.skills;
                 successfulInput = true;
             }
+        }
+        if (events->getInputType() == QUIT_GAME) {
+            state = NO_GAME;
+            return;
         }
         if (!successfulInput) {
             std::cout << "undefined symbol, please try again:" << std::endl;
