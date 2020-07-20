@@ -102,7 +102,7 @@ void Game::init() {
         EnemyRace * pickedEnemy = nullptr;
         for (int j = 0; j < static_cast<int>(enemyRace.size()); ++j) {
             picked -= enemyRace[j].spawnWeight;
-            if (picked < 0) {
+            if (picked <= 0) {
                 pickedEnemy = &enemyRace[j];
                 break;
             }
