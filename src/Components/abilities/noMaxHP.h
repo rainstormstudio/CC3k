@@ -13,6 +13,9 @@ public:
             attributes->setMaxHP(200);
         } else {
             attributes->setMaxHP(attributes->getHP() * 2);
+            if (attributes->getHP() > 999) {
+                attributes->setMaxHP(999);
+            }
         }
     }
     void render(Graphics * gfx) override {}
