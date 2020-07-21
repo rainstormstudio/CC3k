@@ -323,7 +323,7 @@ void Game::render() {
         }
         case WON_GAME: {
             gfx->clear();
-            gfx->drawImage("./assets/won.txt");
+            gfx->drawImage("./assets/victory.txt");
             gfx->render();
             break;
         }

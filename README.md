@@ -54,7 +54,7 @@ Note that the PC’s Atk and Def can never drop below 0.
 * q: allows the player to admit defeat and exit the game.
 Note that the board should be redrawn as appropriate every time a command is entered.
 ## assets
-- won.txt: the victory screen image
+- victory.txt: the victory screen image
 - lost.txt: the death screen image
 - welcome.txt: the welcome screen image
 - restart.txt: the restart screen image
