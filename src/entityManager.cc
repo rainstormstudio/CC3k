@@ -1,8 +1,10 @@
 #include "entityManager.h"
 
 void EntityManager::destroy() {
-    for (auto& entity : entities) {
-        entity->destroy();
+    for (unsigned int i = 0; i < entities.size(); ++i) {
+        delete entities[i];
+        entities.erase(entities.begin() + i);
+        i--;
     }
 }
 
@@ -14,6 +16,7 @@ void EntityManager::update(InputManager * events) {
         if (!entities[i]->isAlive()) {
             delete entities[i];
             entities.erase(entities.begin() + i);
+            i--;
         }
     }
 }

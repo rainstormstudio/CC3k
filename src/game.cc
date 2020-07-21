@@ -30,6 +30,13 @@ void Game::init() {
     manager = new EntityManager();
     importPlayerRace();
     importEnemyRace();
+    
+    initFloor();
+    
+    state = IN_GAME;
+}
+
+void Game::initFloor() {
     int enemyWeightTotal = 0;
     for (int i = 0; i < static_cast<int>(enemyRace.size()); ++i) {
         enemyWeightTotal += enemyRace[i].spawnWeight;
@@ -122,8 +129,6 @@ void Game::init() {
             }
         }
     }
-    
-    state = IN_GAME;
 }
 
 void Game::importPlayerRace() {
@@ -226,6 +231,11 @@ void Game::processInput() {
             }
             if (events->getInputType() == QUIT_GAME) {
                 state = NO_GAME;
+            } else if (events->getInputType() == RESTART_GAME) {
+                manager->destroy();
+                gfx->clear();
+                gfx->drawImage("./assets/restart.txt");
+                initFloor();
             }
             break;
         }

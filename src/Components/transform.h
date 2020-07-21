@@ -16,33 +16,37 @@ public:
 
     void init() override {
         if (position.x == -1 && position.y == -1) {
-            Entity* floorEntity = owner->manager.getEntityByName("Map");
-            Floor* floor = floorEntity->getComponent<Floor>();
-            std::vector<Entity*> entities = owner->manager.getEntities();
-            bool validPosition = false;
-            int posX = 0;
-            int posY = 0;
-            while (!validPosition) {
-                validPosition = true;
-                posY = Math::random(1, floor->getMapHeight() - 1);
-                posX = Math::random(1, floor->getMapWidth() - 1);
-                if (!floor->isChamber(posX, posY)) {
-                    validPosition = false;
-                    continue;
-                }
-                for (auto& entity : entities) {
-                    if (entity->hasComponent<Transform>()) {
-                        Transform * entityTransform = entity->getComponent<Transform>();
-                        if (entityTransform->position.x == posX && entityTransform->position.y == posY) {
-                            validPosition = false;
-                            break;
-                        }
+            randomPosition();
+        }
+    }
+
+    void randomPosition() {
+        Entity* floorEntity = owner->manager.getEntityByName("Map");
+        Floor* floor = floorEntity->getComponent<Floor>();
+        std::vector<Entity*> entities = owner->manager.getEntities();
+        bool validPosition = false;
+        int posX = 0;
+        int posY = 0;
+        while (!validPosition) {
+            validPosition = true;
+            posY = Math::random(1, floor->getMapHeight() - 1);
+            posX = Math::random(1, floor->getMapWidth() - 1);
+            if (!floor->isChamber(posX, posY)) {
+                validPosition = false;
+                continue;
+            }
+            for (auto& entity : entities) {
+                if (entity->hasComponent<Transform>()) {
+                    Transform * entityTransform = entity->getComponent<Transform>();
+                    if (entityTransform->position.x == posX && entityTransform->position.y == posY) {
+                        validPosition = false;
+                        break;
                     }
                 }
             }
-            position.x = posX;
-            position.y = posY;            
         }
+        position.x = posX;
+        position.y = posY;          
     }
 
     void update(InputManager * events) override {}

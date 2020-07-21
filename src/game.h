@@ -22,6 +22,7 @@ public:
 
     bool loop() const;
     void init();
+    void initFloor();
     void importPlayerRace();
     void importEnemyRace();
     void processInput();
