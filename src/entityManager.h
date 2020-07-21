@@ -13,6 +13,7 @@ protected:
     std::vector<Entity*> entities;
 public:
     void destroy();
+    void destroyByLayer(LayerType layer);
     void update(InputManager * events);
     void render(Graphics * gfx);
     Entity* addEntity(std::string name, LayerType layer);

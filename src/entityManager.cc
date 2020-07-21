@@ -8,6 +8,16 @@ void EntityManager::destroy() {
     }
 }
 
+void EntityManager::destroyByLayer(LayerType layer) {
+    for (unsigned int i = 0; i < entities.size(); ++i) {
+        if (entities[i]->layer == layer) {
+            delete entities[i];
+            entities.erase(entities.begin() + i);
+            i--;
+        }
+    }
+}
+
 void EntityManager::update(InputManager * events) {
     for (unsigned int i = 0; i < entities.size(); ++i) {
         entities[i]->update(events);

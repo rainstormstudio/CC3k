@@ -23,8 +23,10 @@ public:
     bool loop() const;
     void init();
     void initFloor();
+    void nextFloor();
     void importPlayerRace();
     void importEnemyRace();
+    void generateEnemies();
     void processInput();
     void update();
     void render();

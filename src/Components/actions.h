@@ -14,6 +14,10 @@ public:
 
     void update(InputManager * events) override {}
 
+    void resetAction() {
+        action = "";
+    }
+
     void setAction(std::string done) {
         action += done + " ";
     }

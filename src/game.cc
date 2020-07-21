@@ -37,10 +37,6 @@ void Game::init() {
 }
 
 void Game::initFloor() {
-    int enemyWeightTotal = 0;
-    for (int i = 0; i < static_cast<int>(enemyRace.size()); ++i) {
-        enemyWeightTotal += enemyRace[i].spawnWeight;
-    }
     gfx->write("Please choose your race", 0, gfx->screen_height - 5);
     int deltaHeight = 5;
     for (unsigned int i = 0; i < playerRace.size(); ++i) {
@@ -104,31 +100,31 @@ void Game::initFloor() {
         }
     }
 
-    for (int i = 0; i < 20; ++i) {
-        int picked = Math::random(1, enemyWeightTotal);
-        EnemyRace * pickedEnemy = nullptr;
-        for (int j = 0; j < static_cast<int>(enemyRace.size()); ++j) {
-            picked -= enemyRace[j].spawnWeight;
-            if (picked <= 0) {
-                pickedEnemy = &enemyRace[j];
-                break;
-            }
-        }
-        Entity* enemy = manager->addEntity("Enemy" + std::to_string(i), ENEMY_LAYER); {
-            enemy->addComponent<Transform>();
-            enemy->addComponent<Appearance>(pickedEnemy->symbol[0]);
-            enemy->addComponent<Attributes>(pickedEnemy->name, 
-                                            pickedEnemy->hp, 
-                                            pickedEnemy->maxHp, 
-                                            pickedEnemy->atk, 
-                                            pickedEnemy->def);
-            enemy->addComponent<Movement>(false);
-            enemy->addComponent<Attack>(false);
-            for (int j = 0; j < static_cast<int>(pickedEnemy->skills.size()); ++j) {
-                // TODO: add enemy skills here
-            }
-        }
+    Entity* stairs = manager->addEntity("Stairs", ITEM_LAYER); {
+        stairs->addComponent<Transform>();
+        stairs->addComponent<Appearance>('\\');
     }
+
+    generateEnemies();
+}
+
+void Game::nextFloor() {
+    manager->destroyByLayer(ITEM_LAYER);
+    manager->destroyByLayer(ENEMY_LAYER);
+    Entity* map = manager->getEntityByName("Map");
+    Floor* floor = map->getComponent<Floor>();
+    floor->incNum();
+    Entity* player = manager->getEntityByName("Player");
+    Transform* playerTransform = player->getComponent<Transform>();
+    Actions* playerActions = player->getComponent<Actions>();
+    playerActions->resetAction();
+    playerActions->setAction("PC went to the next floor.");
+    playerTransform->randomPosition();
+    Entity* stairs = manager->addEntity("Stairs", ITEM_LAYER); {
+        stairs->addComponent<Transform>();
+        stairs->addComponent<Appearance>('\\');
+    }
+    generateEnemies();
 }
 
 void Game::importPlayerRace() {
@@ -202,6 +198,38 @@ void Game::importEnemyRace() {
     }
 }
 
+void Game::generateEnemies() {
+    int enemyWeightTotal = 0;
+    for (int i = 0; i < static_cast<int>(enemyRace.size()); ++i) {
+        enemyWeightTotal += enemyRace[i].spawnWeight;
+    }
+    for (int i = 0; i < 20; ++i) {
+        int picked = Math::random(1, enemyWeightTotal);
+        EnemyRace * pickedEnemy = nullptr;
+        for (int j = 0; j < static_cast<int>(enemyRace.size()); ++j) {
+            picked -= enemyRace[j].spawnWeight;
+            if (picked <= 0) {
+                pickedEnemy = &enemyRace[j];
+                break;
+            }
+        }
+        Entity* enemy = manager->addEntity("Enemy" + std::to_string(i), ENEMY_LAYER); {
+            enemy->addComponent<Transform>();
+            enemy->addComponent<Appearance>(pickedEnemy->symbol[0]);
+            enemy->addComponent<Attributes>(pickedEnemy->name, 
+                                            pickedEnemy->hp, 
+                                            pickedEnemy->maxHp, 
+                                            pickedEnemy->atk, 
+                                            pickedEnemy->def);
+            enemy->addComponent<Movement>(false);
+            enemy->addComponent<Attack>(false);
+            for (int j = 0; j < static_cast<int>(pickedEnemy->skills.size()); ++j) {
+                // TODO: add enemy skills here
+            }
+        }
+    }
+}
+
 void Game::processInput() {
     switch (state) {
         case NO_GAME: {
@@ -257,8 +285,15 @@ void Game::update() {
         case IN_GAME: {
             manager->update(events);
             auto players = manager->getEntitiesByLayer(PLAYER_LAYER);
-            if (players.empty()) {
-                state = LOST_GAME;
+            auto stairs = manager->getEntityByName("Stairs");
+            state = NO_GAME;
+            for (auto player : players) {
+                Transform * playerTransform = player->getComponent<Transform>();
+                Transform * stairsTransform = stairs->getComponent<Transform>();
+                if (playerTransform->position == stairsTransform->position) {
+                    nextFloor();
+                }
+                state = IN_GAME;
             }
             break;
         }
