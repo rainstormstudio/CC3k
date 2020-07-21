@@ -114,6 +114,10 @@ void Game::nextFloor() {
     Entity* map = manager->getEntityByName("Map");
     Floor* floor = map->getComponent<Floor>();
     floor->incNum();
+    if (floor->getNum() == 5) {
+        state = WON_GAME;
+        return;
+    }
     Entity* player = manager->getEntityByName("Player");
     Transform* playerTransform = player->getComponent<Transform>();
     Actions* playerActions = player->getComponent<Actions>();
@@ -288,12 +292,12 @@ void Game::update() {
             auto stairs = manager->getEntityByName("Stairs");
             state = NO_GAME;
             for (auto player : players) {
+                state = IN_GAME;
                 Transform * playerTransform = player->getComponent<Transform>();
                 Transform * stairsTransform = stairs->getComponent<Transform>();
                 if (playerTransform->position == stairsTransform->position) {
                     nextFloor();
                 }
-                state = IN_GAME;
             }
             break;
         }
@@ -318,6 +322,9 @@ void Game::render() {
             break;
         }
         case WON_GAME: {
+            gfx->clear();
+            gfx->drawImage("./assets/won.txt");
+            gfx->render();
             break;
         }
         case LOST_GAME: {

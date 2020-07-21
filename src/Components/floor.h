@@ -64,6 +64,8 @@ public:
         ++num;
     }
 
+    int getNum() const { return num; }
+
     void import(std::string filename) {
         std::string line;
         std::ifstream infile {filename};
