@@ -7,6 +7,7 @@
 
 class Graphics {
     std::vector<std::vector<char>> theDisplay;
+    std::string extra;
 
 public:
     int screen_width;

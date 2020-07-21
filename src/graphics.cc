@@ -10,6 +10,7 @@ Graphics::Graphics(int width, int height)
             theDisplay[i][j] = ' ';
         }
     }
+    extra = "";
 }
 
 void Graphics::clear() {
@@ -18,6 +19,7 @@ void Graphics::clear() {
             theDisplay[i][j] = ' ';
         }
     }
+    extra = "";
 }
 
 void Graphics::render() {
@@ -26,6 +28,9 @@ void Graphics::render() {
             std::cout << theDisplay[i][j];
         }
         std::cout << std::endl;
+    }
+    if (extra != "") {
+        std::cout << extra << std::endl;
     }
 }
 
@@ -51,7 +56,9 @@ void Graphics::drawImage(std::string filename) {
 
 void Graphics::write(std::string content, int x, int y) {
     int len = content.length();
-    for (int i = 0; i < len && x + i < screen_width; ++i) {
+    int i = 0;
+    for (i = 0; i < len && x + i < screen_width; ++i) {
         theDisplay[y][x + i] = content[i];
     }
+    extra += content.substr(i, content.length() - i);
 }

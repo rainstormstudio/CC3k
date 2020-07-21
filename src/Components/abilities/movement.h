@@ -54,7 +54,7 @@ public:
                     action->setAction("PC tried to go " + direction + " but stopped by a wall.");
                     direction = "";
                 } else if (collision) {
-                    action->setAction("PC tried to go " + direction + " but stopped by the enemy");
+                    action->setAction("PC tried to go " + direction + " but stopped by the enemy.");
                     direction = "";
                 } else {
                     transform->position.x += Math::deltaX[events->getInputType()];
