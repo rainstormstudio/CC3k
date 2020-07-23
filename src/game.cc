@@ -30,6 +30,7 @@ void Game::init() {
     manager = new EntityManager();
     importPlayerRace();
     importEnemyRace();
+    importTreasureConfig();
     
     initFloor();
     
@@ -105,6 +106,7 @@ void Game::initFloor() {
         stairs->addComponent<Appearance>('\\');
     }
 
+    generateTreasure();
     generateEnemies();
 }
 
@@ -128,6 +130,7 @@ void Game::nextFloor() {
         stairs->addComponent<Transform>();
         stairs->addComponent<Appearance>('\\');
     }
+    generateTreasure();
     generateEnemies();
 }
 
@@ -247,6 +250,7 @@ void Game::generateTreasure() {
         }
         Entity* treasure = manager->addEntity("Treasure" + std::to_string(i), ITEM_LAYER); {
             treasure->addComponent<Transform>();
+            treasure->addComponent<Appearance>('G');
             treasure->addComponent<Treasure>(pickedTreasure->name, pickedTreasure->value, pickedTreasure->pickable);
         }
     }

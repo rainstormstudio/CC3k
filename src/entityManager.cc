@@ -19,8 +19,22 @@ void EntityManager::destroyByLayer(LayerType layer) {
 }
 
 void EntityManager::update(InputManager * events) {
+    /*
     for (unsigned int i = 0; i < entities.size(); ++i) {
         entities[i]->update(events);
+    }
+    */
+    for (auto& entity : getEntitiesByLayer(MAP_LAYER)) {
+        entity->update(events);
+    }
+    for (auto& entity : getEntitiesByLayer(PLAYER_LAYER)) {
+        entity->update(events);
+    }
+    for (auto& entity : getEntitiesByLayer(ENEMY_LAYER)) {
+        entity->update(events);
+    }
+    for (auto& entity : getEntitiesByLayer(ITEM_LAYER)) {
+        entity->update(events);
     }
     for (unsigned int i = 0; i < entities.size(); ++i) {
         if (!entities[i]->isAlive()) {
