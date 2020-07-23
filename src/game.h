@@ -15,6 +15,7 @@ private:
     EntityManager * manager;
     std::vector<PlayerRace> playerRace;
     std::vector<EnemyRace> enemyRace;
+    std::vector<TreasureType> treasureTypes;
 
 public:
     Game();
@@ -22,11 +23,16 @@ public:
 
     bool loop() const;
     void init();
+
     void initFloor();
     void nextFloor();
+
     void importPlayerRace();
     void importEnemyRace();
+    void importTreasureConfig();
+    void generateTreasure();
     void generateEnemies();
+
     void processInput();
     void update();
     void render();

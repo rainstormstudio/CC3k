@@ -202,6 +202,56 @@ void Game::importEnemyRace() {
     }
 }
 
+void Game::importTreasureConfig() {
+    std::string line;
+    std::ifstream infile {"./configs/treasure.conf"};
+    if (infile.is_open()) {
+        while (std::getline(infile, line)) {
+            std::string treasureName = "";
+            unsigned int spawnWeight;
+            unsigned int value;
+            bool pickable;
+            treasureName = line;
+            getline(infile, line);
+            spawnWeight = std::stoi(line);
+            getline(infile, line);
+            value = std::stoi(line);
+            getline(infile, line);
+            pickable = static_cast<bool>(std::stoi(line));
+            TreasureType type = {treasureName, spawnWeight, value, pickable};
+            while (getline(infile, line) && line != "!") {
+                type.skills.emplace_back(line);
+            }
+            treasureTypes.push_back(type);
+        }
+        infile.close();
+    } else {
+        std::cout << "Error importing treasure config file." << std::endl;
+    }
+}
+
+void Game::generateTreasure() {
+    int treausreWeightTotal = 0;
+    for (unsigned int i = 0; i < treasureTypes.size(); ++i) {
+        treausreWeightTotal += treasureTypes[i].spawnWeight;
+    }
+    for (int i = 0; i < 10; ++i) {
+        int picked = Math::random(1, treausreWeightTotal);
+        TreasureType * pickedTreasure = nullptr;
+        for (unsigned int j = 0; j < treasureTypes.size(); ++j) {
+            picked -= treasureTypes[j].spawnWeight;
+            if (picked <= 0) {
+                pickedTreasure = &treasureTypes[j];
+                break;
+            }
+        }
+        Entity* treasure = manager->addEntity("Treasure" + std::to_string(i), ITEM_LAYER); {
+            treasure->addComponent<Transform>();
+            treasure->addComponent<Treasure>(pickedTreasure->name, pickedTreasure->value, pickedTreasure->pickable);
+        }
+    }
+}
+
 void Game::generateEnemies() {
     int enemyWeightTotal = 0;
     for (int i = 0; i < static_cast<int>(enemyRace.size()); ++i) {

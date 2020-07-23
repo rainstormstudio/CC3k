@@ -39,7 +39,7 @@ struct Vec2 {
     }
 };
 
-struct PlayerRace {
+struct Race {
     std::string name;
     std::string symbol;
     unsigned int hp;
@@ -49,14 +49,22 @@ struct PlayerRace {
     std::vector<std::string> skills;
 };
 
-struct EnemyRace {
-    std::string name;
-    std::string symbol;
+struct PlayerRace : public Race {
+    PlayerRace(std::string name, std::string symbol, unsigned int hp, unsigned int maxHp, unsigned int atk, unsigned int def) 
+        : Race{name, symbol, hp, maxHp, atk, def} {}
+};
+
+struct EnemyRace : public Race {
     unsigned int spawnWeight;
-    unsigned int hp;
-    unsigned int maxHp;
-    unsigned int atk;
-    unsigned int def;
+    EnemyRace(std::string name, std::string symbol, unsigned int spawnWeight, unsigned int hp, unsigned int maxHp, unsigned int atk, unsigned int def) 
+        : Race{name, symbol, hp, maxHp, atk, def}, spawnWeight{spawnWeight} {}
+};
+
+struct TreasureType {
+    std::string name;
+    unsigned int spawnWeight;
+    unsigned int value;
+    bool pickable;
     std::vector<std::string> skills;
 };
 
