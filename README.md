@@ -92,6 +92,13 @@ every enemy race should follow the following format:
 - attack point
 - defense point
 - a list of skills names, end with a '!' mark
+### treasure.conf format
+every treasure type should follow the following format:
+- type name
+- spawn weight
+- gold value
+- pickable
+- a list of skills names, end with a '!' mark
 ## Command Line options
     ...
 ## Prerequisites
