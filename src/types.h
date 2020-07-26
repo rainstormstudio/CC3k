@@ -68,6 +68,13 @@ struct TreasureType {
     std::vector<std::string> skills;
 };
 
+struct PotionType {
+    std::string name;
+    int spawnWeight;
+    std::string effect;
+    int effectValue;
+};
+
 enum LayerType {
     MAP_LAYER,
     ITEM_LAYER,

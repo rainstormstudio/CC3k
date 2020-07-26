@@ -31,6 +31,7 @@ void Game::init() {
     importPlayerRace();
     importEnemyRace();
     importTreasureConfig();
+    importPotionConfig();
     
     initFloor();
     
@@ -106,6 +107,7 @@ void Game::initFloor() {
         stairs->addComponent<Appearance>('\\');
     }
 
+    generatePotions();
     generateTreasure();
     generateEnemies();
 }
@@ -130,6 +132,7 @@ void Game::nextFloor() {
         stairs->addComponent<Transform>();
         stairs->addComponent<Appearance>('\\');
     }
+    generatePotions();
     generateTreasure();
     generateEnemies();
 }
@@ -233,6 +236,30 @@ void Game::importTreasureConfig() {
     }
 }
 
+void Game::importPotionConfig() {
+    std::string line;
+    std::ifstream infile {"./configs/potion.conf"};
+    if (infile.is_open()) {
+        while (std::getline(infile, line)) {
+            std::string potionName = "";
+            int spawnWeight = 0;
+            std::string effect = "";
+            int effectValue = 0;
+            potionName = line;
+            getline(infile, line);
+            spawnWeight = std::stoi(line);
+            getline(infile, line);
+            effect = line.substr(0, line.find(' '));
+            effectValue = std::stoi(line.substr(line.find(' ')+1, line.length() - line.find(' ')));
+            PotionType type = {potionName, spawnWeight, effect, effectValue};
+            potionTypes.push_back(type);
+        }
+        infile.close();
+    } else {
+        std::cout << "Error importing potion config file." << std::endl;
+    }
+}
+
 void Game::generateTreasure() {
     int treausreWeightTotal = 0;
     for (unsigned int i = 0; i < treasureTypes.size(); ++i) {
@@ -252,6 +279,29 @@ void Game::generateTreasure() {
             treasure->addComponent<Transform>();
             treasure->addComponent<Appearance>('G');
             treasure->addComponent<Treasure>(pickedTreasure->name, pickedTreasure->value, pickedTreasure->pickable);
+        }
+    }
+}
+
+void Game::generatePotions() {
+    int potionWeightTotal = 0;
+    for (unsigned int i = 0; i < potionTypes.size(); ++i) {
+        potionWeightTotal += potionTypes[i].spawnWeight;
+    }
+    for (int i = 0; i < 10; ++i) {
+        int picked = Math::random(1, potionWeightTotal);
+        PotionType * pickedPotion = nullptr;
+        for (unsigned int j = 0; j < potionTypes.size(); ++j) {
+            picked -= potionTypes[j].spawnWeight;
+            if (picked <= 0) {
+                pickedPotion = &potionTypes[j];
+                break;
+            }
+        }
+        Entity *potion = manager->addEntity("Potion" + std::to_string(i), ITEM_LAYER); {
+            potion->addComponent<Transform>();
+            potion->addComponent<Appearance>('P');
+            potion->addComponent<Potion>(pickedPotion->name, pickedPotion->effect, pickedPotion->effectValue);
         }
     }
 }

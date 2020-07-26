@@ -8,20 +8,28 @@ class Attributes : public Component {
     int hp;
     int maxHp;
     int atk;
+    int atkBoost;
     int def;
+    int defBoost;
 public:
-    Attributes() : race{"Shade"}, hp{125}, maxHp{125}, atk{25}, def{25} {}
+    Attributes() 
+        : race{"Shade"}, hp{125}, maxHp{125}, atk{25}, atkBoost{0}, def{25}, defBoost{0} {}
     Attributes(std::string race, int hp, int maxHp, 
                 int atk, int def)
         : race{race}, hp{hp}, maxHp{maxHp}, 
-            atk{atk}, def{def} {
+            atk{atk}, atkBoost{0}, def{def}, defBoost{0} {
     }
 
     std::string getRace() const { return race; }
     int getHP() const { return hp; }
     int getMaxHP() const { return maxHp; }
-    int getAtk() const { return atk; }
-    int getDef() const { return def; }
+    int getAtk() const { return atk + atkBoost; }
+    int getDef() const { return def + defBoost; }
+
+    void clearBoost() {
+        atkBoost = 0;
+        defBoost = 0;
+    }
 
     void setHP(int value) { hp = value; }
     void setMaxHP(int value) { maxHp = value; }
@@ -32,12 +40,12 @@ public:
         hp += value; 
         if (hp > maxHp) hp = maxHp;
     }
-
     void incMaxHP( int value) { maxHp += value; }
-
     void incAtk( int value) { atk += value; }
-
     void incDef( int value) { def += value; }
+
+    void incAtkBoost(int value) { atkBoost += value; }
+    void incDefBoost(int value) { defBoost += value; }
 
     void init() override {}
     void update(InputManager * events) override {}

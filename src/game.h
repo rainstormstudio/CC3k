@@ -16,6 +16,7 @@ private:
     std::vector<PlayerRace> playerRace;
     std::vector<EnemyRace> enemyRace;
     std::vector<TreasureType> treasureTypes;
+    std::vector<PotionType> potionTypes;
 
 public:
     Game();
@@ -30,7 +31,10 @@ public:
     void importPlayerRace();
     void importEnemyRace();
     void importTreasureConfig();
+    void importPotionConfig();
+
     void generateTreasure();
+    void generatePotions();
     void generateEnemies();
 
     void processInput();
