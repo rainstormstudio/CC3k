@@ -23,7 +23,7 @@ public:
     }
 
     void render(Graphics * gfx) override {
-        gfx->write("Action: " + action, 0, gfx->screen_height - 1);
+        gfx->writeln("Action: " + action, 0, gfx->getScreenRows() - 2, gfx->getScreenCols(), 79, 132, 255, 255);
         action = "";
     }
 

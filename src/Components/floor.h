@@ -107,12 +107,21 @@ public:
     void render(Graphics * gfx) override {
         for (int i = 0; i < map_height; ++i) {
             for (int j = 0; j < map_width; ++j) {
-                gfx->draw(map[i][j], i, j);
+                gfx->setCh(map[i][j], j, i);
+                if (map[i][j] == '.') {
+                    gfx->setBackColor(186, 169, 161, 255, j, i);
+                } else if (map[i][j] == '-' || map[i][j] == '|') {
+                    gfx->setForeColor(161, 120, 72, 255, j, i);
+                    gfx->setBackColor(48, 19, 6, 255, j, i);
+                } else if (map[i][j] == '#') {
+                    gfx->setForeColor(48, 19, 6, 255, j, i);
+                    gfx->setBackColor(161, 120, 72, 255, j, i);
+                }
             }
         }
         gfx->write("Floor: " + std::to_string(num),
-                    gfx->screen_width - 10,
-                    gfx->screen_height - 5);
+                    gfx->getScreenCols() - 10,
+                    gfx->getScreenRows() - 6);
     }
 
     ~Floor() override {

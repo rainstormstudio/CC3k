@@ -18,7 +18,7 @@ public:
 
     void render(Graphics * gfx) override {
         if (owner->name == "Player") {
-            gfx->write("Gold: " + std::to_string(gold), 20, gfx->screen_height - 5);
+            gfx->write("Gold: " + std::to_string(gold), 20, gfx->getScreenRows() - 6, 255, 223, 79, 255);
         }
     }
 };

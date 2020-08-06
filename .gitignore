@@ -4,3 +4,11 @@
 *.d
 
 src/.cquery_cached_index/
+
+CMakeFiles/
+
+CMakeCache.txt
+
+cmake_install.cmake
+
+build/

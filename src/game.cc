@@ -24,8 +24,8 @@ bool Game::loop() const {
 }
 
 void Game::init() {
-    gfx = new Graphics(SCREEN_WIDTH, SCREEN_HEIGHT);
-    gfx->drawImage("./assets/welcome.txt");
+    gfx = new Graphics("cc3k", 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
+    gfx->importTxt("./assets/welcome.txt", false);
     events = new InputManager();
     manager = new EntityManager();
     importPlayerRace();
@@ -39,15 +39,15 @@ void Game::init() {
 }
 
 void Game::initFloor() {
-    gfx->write("Please choose your race", 0, gfx->screen_height - 5);
+    gfx->write("Please choose your race", 0, gfx->getScreenRows() - 5);
     int deltaHeight = 5;
     for (unsigned int i = 0; i < playerRace.size(); ++i) {
         if ((i * 15) % 75 == 0) {
             deltaHeight --;
         }
-        gfx->write(playerRace[i].name + "(" + playerRace[i].symbol + ")", (i * 15) % 75, gfx->screen_height - deltaHeight);
+        gfx->write(playerRace[i].name + "(" + playerRace[i].symbol + ")", (i * 15) % 75, gfx->getScreenRows() - deltaHeight);
     }
-    gfx->write("or type q to quit the game.", 0, gfx->screen_height - 1);
+    gfx->write("or type q to quit the game.", 0, gfx->getScreenRows() - 1);
     gfx->render();
     bool successfulInput = false;
     std::string raceName = "";
@@ -83,7 +83,7 @@ void Game::initFloor() {
     }
     Entity* player = manager->addEntity("Player", PLAYER_LAYER); {
         player->addComponent<Transform>();
-        player->addComponent<Appearance>('@');
+        player->addComponent<Appearance>('@', 0, 0, 0, 255, 79, 255, 240, 255);
         player->addComponent<Attributes>(raceName, playerHP, playerMaxHP, playerAtk, playerDef);
         player->addComponent<Wallet>();
         player->addComponent<Actions>();
@@ -277,7 +277,7 @@ void Game::generateTreasure() {
         }
         Entity* treasure = manager->addEntity("Treasure" + std::to_string(i), ITEM_LAYER); {
             treasure->addComponent<Transform>();
-            treasure->addComponent<Appearance>('G');
+            treasure->addComponent<Appearance>('G', 236, 165, 49, 255, 254, 255, 123, 255);
             treasure->addComponent<Treasure>(pickedTreasure->name, pickedTreasure->value, pickedTreasure->pickable);
         }
     }
@@ -300,7 +300,7 @@ void Game::generatePotions() {
         }
         Entity *potion = manager->addEntity("Potion" + std::to_string(i), ITEM_LAYER); {
             potion->addComponent<Transform>();
-            potion->addComponent<Appearance>('P');
+            potion->addComponent<Appearance>('P', 67, 88, 255, 255, 162, 255, 249, 255);
             potion->addComponent<Potion>(pickedPotion->name, pickedPotion->effect, pickedPotion->effectValue);
         }
     }
@@ -323,7 +323,7 @@ void Game::generateEnemies() {
         }
         Entity* enemy = manager->addEntity("Enemy" + std::to_string(i), ENEMY_LAYER); {
             enemy->addComponent<Transform>();
-            enemy->addComponent<Appearance>(pickedEnemy->symbol[0]);
+            enemy->addComponent<Appearance>(pickedEnemy->symbol[0], 255, 0, 0, 255, 255, 158, 146, 255);
             enemy->addComponent<Attributes>(pickedEnemy->name, 
                                             pickedEnemy->hp, 
                                             pickedEnemy->maxHp, 
@@ -370,7 +370,7 @@ void Game::processInput() {
             } else if (events->getInputType() == RESTART_GAME) {
                 manager->destroy();
                 gfx->clear();
-                gfx->drawImage("./assets/restart.txt");
+                gfx->importTxt("./assets/restart.txt", false);
                 initFloor();
             }
             break;
@@ -427,13 +427,13 @@ void Game::render() {
         }
         case WON_GAME: {
             gfx->clear();
-            gfx->drawImage("./assets/victory.txt");
+            gfx->importTxt("./assets/victory.txt", false);
             gfx->render();
             break;
         }
         case LOST_GAME: {
             gfx->clear();
-            gfx->drawImage("./assets/lost.txt");
+            gfx->importTxt("./assets/lost.txt", false);
             gfx->render();
             break;
         }
