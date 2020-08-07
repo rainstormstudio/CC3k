@@ -102,9 +102,12 @@ every treasure type should follow the following format:
 ## Command Line options
     ...
 ## Prerequisites
-    ...
+You should have SDL2 support
 ## Installings
-    use make command at the root directory
+at CC3k root directory
+    cmake .
+and then
+    make
 ## Author
 Daniel Hongyu Ding
 ## References
