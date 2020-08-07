@@ -6,7 +6,7 @@ Graphics::Graphics(std::string title, Uint32 fullscreenFlag, std::string fontPat
     : title{title}, fullscreen{fullscreenFlag}, 
     screenWidth{screenWidth}, screenHeight{screenHeight}, 
     numRows{numRows}, numCols{numCols} {
-    
+
     window = nullptr;
     renderer = nullptr;
     font = nullptr;

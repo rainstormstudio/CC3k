@@ -41,8 +41,8 @@ public:
                 Actions * action = owner->getComponent<Actions>();
                 std::vector<Entity*> enemies = owner->manager.getEntitiesByLayer(ENEMY_LAYER);
                 bool collision = false;
-                int dirX = transform->position.x + Math::deltaX[events->getExtraInputType()];
-                int dirY = transform->position.y + Math::deltaY[events->getExtraInputType()];
+                int dirX = transform->position.x + Math::deltaX[events->getInputType()];
+                int dirY = transform->position.y + Math::deltaY[events->getInputType()];
                 for (auto& enemy : enemies) {
                     Transform* enemyTransform = enemy->getComponent<Transform>();
                     if (enemyTransform->position.x == dirX && enemyTransform->position.y == dirY) {

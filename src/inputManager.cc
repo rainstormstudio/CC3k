@@ -3,9 +3,7 @@
 #include <fstream>
 
 InputManager::InputManager() {
-    keyInput = std::vector<bool>(KEY_TOTAL);
     commands = std::vector<std::string>(TOTAL_COMMANDS);
-    clear();
     readConfig();
 }
 
@@ -23,15 +21,11 @@ void InputManager::readConfig() {
 }
 
 bool InputManager::isPressed(char key) const {
-    return keyInput[key];
+    return SDL_GetKeyName(event.key.keysym.sym)[0] == key;
 }
 
 std::string InputManager::getInput() const { 
-    return input;
-}
-
-std::string InputManager::getExtraInput() const {
-    return extraInput;
+    return SDL_GetKeyName(event.key.keysym.sym);
 }
 
 std::string InputManager::getCommand(CommandType command) const {
@@ -39,35 +33,17 @@ std::string InputManager::getCommand(CommandType command) const {
 }
 
 CommandType InputManager::getInputType() {
+    if (event.type == SDL_QUIT) {
+        return QUIT_GAME;
+    }
     for (int i = 0; i < TOTAL_COMMANDS; ++i) {
-        if (input == commands[i]) {
+        if (SDL_GetKeyName(event.key.keysym.sym) == commands[i]) {
             return static_cast<CommandType>(i);
         }
     }
     return TOTAL_COMMANDS;
-}
-
-CommandType InputManager::getExtraInputType() {
-    for (int i = 0; i < TOTAL_COMMANDS; ++i) {
-        if (extraInput == commands[i]) {
-            return static_cast<CommandType>(i);
-        }
-    }
-    return TOTAL_COMMANDS;
-}
-
-void InputManager::clear() {
-    for (int i = 0; i < KEY_TOTAL; ++i) {
-        keyInput[i] = false;
-    }
-    input = "";
-    extraInput = "";
 }
 
 void InputManager::update() {
-    std::string line;
-    std::getline(std::cin, line);
-
-    input = line.substr(0, line.find(' '));
-    extraInput = line.substr(line.find(' ')+1, line.length() - line.find(' '));
+    while (!(SDL_PollEvent(&event) != 0 && (event.type == SDL_QUIT || event.type == SDL_KEYDOWN)));
 }

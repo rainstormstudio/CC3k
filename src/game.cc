@@ -34,11 +34,11 @@ void Game::init() {
     importPotionConfig();
     
     initFloor();
-    
-    state = IN_GAME;
 }
 
 void Game::initFloor() {
+    state = IN_GAME;
+
     gfx->write("Please choose your race", 0, gfx->getScreenRows() - 5);
     int deltaHeight = 5;
     for (unsigned int i = 0; i < playerRace.size(); ++i) {
@@ -346,23 +346,6 @@ void Game::processInput() {
         case IN_GAME: {
             events->update();
             while (events->getInputType() == TOTAL_COMMANDS) {
-                std::cout << "Please enter a valid command." << std::endl;
-                std::cout << "-- movement commands --------------------------------------------" << std::endl;
-                std::cout << "  go North: "             << events->getCommand(NORTH) << std::endl;
-                std::cout << "  go South: "             << events->getCommand(SOUTH) << std::endl;
-                std::cout << "  go East:  "             << events->getCommand(EAST) << std::endl;
-                std::cout << "  go West:  "             << events->getCommand(WEST) << std::endl;
-                std::cout << "  go North-east: "        << events->getCommand(NORTHEAST) << std::endl;
-                std::cout << "  go North-west: "        << events->getCommand(NORTHWEST) << std::endl;
-                std::cout << "  go South-east: "        << events->getCommand(SOUTHEAST) << std::endl;
-                std::cout << "  go South-west: "        << events->getCommand(SOUTHWEST) << std::endl;
-                std::cout << "-- action commands ----------------------------------------------" << std::endl;
-                std::cout << "  use potion:          " << events->getCommand(USE_POTION) << std::endl;
-                std::cout << "  attack:              " << events->getCommand(ATTACK) << std::endl;
-                std::cout << "  toggle stop enemies: " << events->getCommand(STOP_ENEMIES) << std::endl;
-                std::cout << "  restart the game:    " << events->getCommand(RESTART_GAME) << std::endl;
-                std::cout << "  quit the game:       " << events->getCommand(QUIT_GAME) << std::endl;
-                std::cout << "-----------------------------------------------------------------" << std::endl;
                 events->update();
             }
             if (events->getInputType() == QUIT_GAME) {
@@ -394,7 +377,7 @@ void Game::update() {
             manager->update(events);
             auto players = manager->getEntitiesByLayer(PLAYER_LAYER);
             auto stairs = manager->getEntityByName("Stairs");
-            state = NO_GAME;
+            state = LOST_GAME;
             for (auto player : players) {
                 state = IN_GAME;
                 Transform * playerTransform = player->getComponent<Transform>();
@@ -402,6 +385,9 @@ void Game::update() {
                 if (playerTransform->position == stairsTransform->position) {
                     nextFloor();
                 }
+            }
+            if (events->getInputType() == QUIT_GAME) {
+                state = NO_GAME;
             }
             break;
         }
@@ -429,12 +415,14 @@ void Game::render() {
             gfx->clear();
             gfx->importTxt("./assets/victory.txt", false);
             gfx->render();
+            events->update();
             break;
         }
         case LOST_GAME: {
             gfx->clear();
             gfx->importTxt("./assets/lost.txt", false);
             gfx->render();
+            events->update();
             break;
         }
     }

@@ -29,8 +29,9 @@ public:
         Appearance * appearance = owner->getComponent<Appearance>();
         if (hasControl) {
             if (events->getInputType() == ATTACK) {
-                int attackX = transform->position.x + Math::deltaX[events->getExtraInputType()];
-                int attackY = transform->position.y + Math::deltaY[events->getExtraInputType()];
+                events->update();
+                int attackX = transform->position.x + Math::deltaX[events->getInputType()];
+                int attackY = transform->position.y + Math::deltaY[events->getInputType()];
                 auto entities = owner->manager.getEntitiesByLayer(ENEMY_LAYER);
                 bool kill = false;
                 int damage = 0;
