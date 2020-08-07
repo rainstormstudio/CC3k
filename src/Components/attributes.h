@@ -54,8 +54,8 @@ public:
         if (owner->name == "Player") {
             gfx->write("Race: " + race, 0, gfx->getScreenRows() - 6);
             gfx->write("HP: " + std::to_string(hp), 0, gfx->getScreenRows() - 5, 36, 255, 33, 255);
-            gfx->write("Atk: " + std::to_string(atk), 0, gfx->getScreenRows() - 4, 255, 97, 79, 255);
-            gfx->write("Def: " + std::to_string(def), 0, gfx->getScreenRows() - 3, 255, 130, 30, 255);
+            gfx->write("Atk: " + std::to_string(atk + atkBoost), 0, gfx->getScreenRows() - 4, 255, 97, 79, 255);
+            gfx->write("Def: " + std::to_string(def + defBoost), 0, gfx->getScreenRows() - 3, 255, 130, 30, 255);
         }
     }
 

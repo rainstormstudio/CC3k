@@ -11,3 +11,4 @@
 #include "./Components/abilities/selfHealing.h"
 #include "./Components/abilities/noMaxHP.h"
 #include "./Components/abilities/stealHealth.h"
+#include "./Components/abilities/usePotion.h"

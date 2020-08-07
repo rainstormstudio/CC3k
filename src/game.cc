@@ -86,6 +86,7 @@ void Game::initFloor() {
         player->addComponent<Actions>();
         player->addComponent<Movement>(true);
         player->addComponent<Attack>(true);
+        player->addComponent<UsePotion>();
         for (int i = 0; i < static_cast<int>(skills.size()); ++i) {
             if (skills[i].substr(0, 11) == "SelfHealing") {
                 int value = std::stoi(skills[i].substr(12, skills[i].size() - 12));
@@ -122,6 +123,8 @@ void Game::nextFloor() {
     Entity* player = manager->getEntityByName("Player");
     Transform* playerTransform = player->getComponent<Transform>();
     Actions* playerActions = player->getComponent<Actions>();
+    Attributes* playerAttributes = player->getComponent<Attributes>();
+    playerAttributes->clearBoost();
     playerActions->resetAction();
     playerActions->setAction("PC went to the next floor.");
     playerTransform->randomPosition();
