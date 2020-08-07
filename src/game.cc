@@ -414,9 +414,9 @@ void Game::render() {
         case WON_GAME: {
             gfx->clear();
             gfx->importTxt("./assets/victory.txt", false);
+            gfx->write("Press any key...", 0, gfx->getScreenRows() - 6);
             gfx->render();
             events->update();
-            gfx->write("Press any key...", 0, gfx->getScreenRows() - 6);
             break;
         }
         case LOST_GAME: {
