@@ -108,7 +108,7 @@ every treasure type should follow the following format:
     ...
 ## Prerequisites
 You should have SDL2 support
-## Installings
+## Build
 at CC3k root directory
 ```
     cmake .
@@ -116,6 +116,10 @@ at CC3k root directory
 and then
 ```
     make
+```
+## Run
+```
+    ./cc3k
 ```
 ## Author
 Daniel Hongyu Ding
