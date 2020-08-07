@@ -49,10 +49,10 @@ In the game of CC3k, there is only one type of usable item: a potion. Potions ar
 The effects of RH and PH are permanent while the effects of all other potions are limited to the floor they are used on. For example, using a BA potion will only boost the player character’s Atk until the beginning of the next floor.
 
 Note that the PC’s Atk and Def can never drop below 0.
-### Commands
-* no,so,ea,we,ne,nw,se,sw: moves the player character one block in the appropriate cardinal direction.
-* u <direction>: uses the potion indicated by the direction (e.g. no, so, ea).
-* a <direction>: attacks the enemy in the specified direction, if the monster is in the immediately specified block (e.g. must be one block north of the @).
+### Defualt Commands
+* numpad: moves the player character one block in the appropriate cardinal direction.
+* u: uses the potion; it follows a direction input to indicate which direction to use the potion.
+* a: attacks the enemy; it follows a direction input to indicate which direction to attack.
 * s, d, v, g, t: specifies the race the player wishes to be when starting a game.
 * f: stops enemies from moving until this key is pressed again.
 * r: restarts the game. All stats, inventory, and gold are reset. A new race should be selected.

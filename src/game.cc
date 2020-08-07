@@ -73,9 +73,6 @@ void Game::initFloor() {
             state = NO_GAME;
             return;
         }
-        if (!successfulInput) {
-            std::cout << "undefined symbol, please try again:" << std::endl;
-        }
     }
     Entity* map = manager->addEntity("Map", MAP_LAYER); {
         map->addComponent<Floor>(SCREEN_WIDTH, SCREEN_HEIGHT - 5);
@@ -416,11 +413,13 @@ void Game::render() {
             gfx->importTxt("./assets/victory.txt", false);
             gfx->render();
             events->update();
+            gfx->write("Press any key...", 0, gfx->getScreenRows() - 6);
             break;
         }
         case LOST_GAME: {
             gfx->clear();
             gfx->importTxt("./assets/lost.txt", false);
+            gfx->write("Press any key...", 0, gfx->getScreenRows() - 6);
             gfx->render();
             events->update();
             break;
