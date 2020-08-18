@@ -24,9 +24,33 @@ bool Game::loop() const {
 }
 
 void Game::init() {
-    gfx = new Graphics("cc3k", "./assets/tilesets/Vintl01.png", 16, 16, 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
-    gfx->importTxt("./assets/welcome.txt", false);
     events = new InputManager();
+    gfx = new Graphics("cc3k", "./assets/tilesets/Vintl01.png", 16, 16, 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
+    for (int i = 0; i < 1; ++i) {
+        for (int j = 0; j < 100; ++j) {
+            SDL_Delay(50);
+            gfx->clear();
+            for (int k = 0; k < 9; ++k) {
+                for (int l = 0; l < 20; ++l) {
+                    gfx->setCh('@', j-k-l, 16-k);
+                    gfx->setForeColor(round(255.0 * (j-20) / 50.0), 
+                                      int(round(500.0 - 500.0 * (j-20) / 50.0)) % 255, 
+                                      255 - int(round(500.0 - 500.0 * (j-20) / 50.0)) % 255, 
+                                      int(round(255.0 - 255.0 * double(l) / 20.0)), 
+                                      j-k-l, 16-k);
+                    gfx->setBackColor(round(255.0 * (j-20) / 50.0), 
+                                      int(round(500.0 - 500.0 * (j-20) / 50.0)) % 255, 
+                                      255 - int(round(500.0 - 500.0 * (j-20) / 50.0)) % 255, 
+                                      int(round(255.0 - 255.0 * double(l) / 20.0)), 
+                                      j-k-l, 16-k);
+                }
+            }
+            gfx->importTxt("./assets/pre-welcome.txt", true);
+            gfx->render();
+        }
+    }
+    gfx->clear();
+    gfx->importTxt("./assets/welcome.txt", false);
     manager = new EntityManager();
     importPlayerRace();
     importEnemyRace();

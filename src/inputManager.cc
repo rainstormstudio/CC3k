@@ -47,3 +47,4 @@ CommandType InputManager::getInputType() {
 void InputManager::update() {
     while (!(SDL_PollEvent(&event) != 0 && (event.type == SDL_QUIT || event.type == SDL_KEYDOWN)));
 }
+
