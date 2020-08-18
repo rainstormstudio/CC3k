@@ -37,6 +37,7 @@ Graphics::Graphics(std::string title, std::string tilesetFilename,
             }
         }
     }
+    SDL_RaiseWindow(window);
 
     tileset = nullptr;
     SDL_Surface* surface = IMG_Load(tilesetFilename.c_str());

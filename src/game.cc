@@ -28,6 +28,13 @@ void Game::init() {
     gfx = new Graphics("cc3k", "./assets/tilesets/Vintl01.png", 16, 16, 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
     for (int i = 0; i < 1; ++i) {
         for (int j = 0; j < 100; ++j) {
+            SDL_Event e;
+            while (SDL_PollEvent(&e) != 0) {
+                if (e.type == SDL_QUIT) {
+                    state = NO_GAME;
+                    return;
+                }
+            }
             SDL_Delay(50);
             gfx->clear();
             for (int k = 0; k < 9; ++k) {
