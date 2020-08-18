@@ -1,12 +1,15 @@
 #include "graphics.h"
 
-Graphics::Graphics(std::string title, Uint32 fullscreenFlag, std::string fontPath,
+Graphics::Graphics(std::string title, std::string tilesetFilename, 
+                   unsigned int numSrcRows, unsigned int numSrcCols,
+                   Uint32 fullscreenFlag, std::string fontPath,
                    unsigned int screenWidth, unsigned int screenHeight, 
                    unsigned int numRows, unsigned int numCols) 
     : title{title}, fullscreen{fullscreenFlag}, 
+    numSrcRows{numSrcRows}, numSrcCols{numSrcCols},
     screenWidth{screenWidth}, screenHeight{screenHeight}, 
     numRows{numRows}, numCols{numCols} {
-
+    
     window = nullptr;
     renderer = nullptr;
     font = nullptr;
@@ -24,55 +27,58 @@ Graphics::Graphics(std::string title, Uint32 fullscreenFlag, std::string fontPat
             if (TTF_Init() == -1) {
                 std::cerr << "TTF initialization failed: " << TTF_GetError() << std::endl;
             } else {
-                font = TTF_OpenFont(fontPath.c_str(), 36);
+                font = TTF_OpenFont(fontPath.c_str(), 24);
                 if (font == nullptr) {
                     std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
                 }
             }
+            if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+                std::cerr << "Failed to load SDL_image: " << IMG_GetError() << std::endl;
+            }
         }
     }
 
-    preBuffer = std::vector<std::vector<Buffer>>(numRows);
-    for (int i = 0; i < numRows; ++i) {
-        preBuffer[i] = std::vector<Buffer>(numCols);
-        for (int j = 0; j < numCols; ++j) {
-            preBuffer[i][j] = {' ', 255, 255, 255, 255, 0, 0, 0, 255};
+    tileset = nullptr;
+    SDL_Surface* surface = IMG_Load(tilesetFilename.c_str());
+    if (surface == nullptr) {
+        std::cerr << "Error initializing SDL surface: " << IMG_GetError() << std::endl;
+    } else {
+        SDL_SetColorKey(surface, SDL_TRUE, SDL_MapRGB(surface->format, 255, 0, 255));
+        tileset = SDL_CreateTextureFromSurface(renderer, surface);
+        if (tileset == nullptr) {
+            std::cerr << "Error creating texture from " << tilesetFilename << ": " << SDL_GetError() << std::endl;
+        } else {
+            tileWidth = surface->w / numSrcCols;
+            tileHeight = surface->h / numSrcRows;
         }
+        SDL_FreeSurface(surface);
     }
 
-    textDisplay = std::vector<std::vector<std::shared_ptr<Texture>>>(numRows);
+    textDisplay = std::vector<std::vector<std::shared_ptr<CTexture>>>(numRows);
     for (int i = 0; i < numRows; ++i) {
-        textDisplay[i] = std::vector<std::shared_ptr<Texture>>(numCols);
+        textDisplay[i] = std::vector<std::shared_ptr<CTexture>>(numCols);
         for (int j = 0; j < numCols; ++j) {
-            textDisplay[i][j] = std::make_shared<Texture>(screenWidth/numCols, screenHeight/numRows);
-            textDisplay[i][j]->loadFromText(renderer, std::string(1, preBuffer[i][j].ch), font);
-            textDisplay[i][j]->setBlendMode(SDL_BLENDMODE_BLEND);
-            textDisplay[i][j]->setPosition(j*(screenWidth/numCols), i*(screenHeight/numRows));
+            textDisplay[i][j] = std::make_shared<CTexture>(tileset, numSrcRows, numSrcCols, tileWidth, tileHeight, screenWidth/numCols, screenHeight/numRows);
+            textDisplay[i][j]->setDestPosition(j*(screenWidth/numCols), i*(screenHeight/numRows));
         }
     }
 }
 
-void Graphics::setCh(char ch, unsigned int x, unsigned int y) {
+void Graphics::setCh(char index, int x, int y) {
     if (x < numCols && y < numRows) {
-        preBuffer[y][x].ch = ch;
+        textDisplay[y][x]->setIndex(index);
     }
 }
 
 void Graphics::setForeColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int x, int y) {
     if (x < numCols && y < numRows) {
-        preBuffer[y][x].r = r;
-        preBuffer[y][x].g = g;
-        preBuffer[y][x].b = b;
-        preBuffer[y][x].a = a;
+        textDisplay[y][x]->setForeColor(r, g, b, a);
     }
 }
 
 void Graphics::setBackColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int x, int y) {
     if (x < numCols && y < numRows) {
-        preBuffer[y][x].br = r;
-        preBuffer[y][x].bg = g;
-        preBuffer[y][x].bb = b;
-        preBuffer[y][x].ba = a;
+        textDisplay[y][x]->setBackColor(r, g, b, a);
     }
 }
 
@@ -85,11 +91,10 @@ void Graphics::importTxt(std::string filename, bool transparent) {
             int len = line.length();
             if (row < numRows) {
                 for (int i = 0; i < len && i < numCols; ++i) {
-                    if (!transparent || (transparent && line[i] != ' ')) {
-                        preBuffer[row][i] = {
-                            line[i],
-                            255, 255, 255, 255,
-                            0, 0, 0, 255};
+                    if (!transparent || (transparent && line[i] != ' ')) {                        
+                        textDisplay[row][i]->setIndex(line[i]);
+                        textDisplay[row][i]->setForeColor(255, 255, 255, 255);
+                        textDisplay[row][i]->setBackColor(0, 0, 0, 255);      
                     }
                 }
                 ++row;
@@ -107,7 +112,9 @@ void Graphics::write(std::string content, int x, int y) {
     }
     int len = content.length();
     for (int i = 0; i < len && x + i < numCols; ++i) {
-        preBuffer[y][x + i] = {content[i], 255, 255, 255, 255, 0, 0, 0, 255};
+        textDisplay[y][x + i]->setIndex(content[i]);
+        textDisplay[y][x + i]->setForeColor(255, 255, 255, 255);
+        textDisplay[y][x + i]->setBackColor(0, 0, 0, 255);        
     }
 }
 
@@ -117,7 +124,21 @@ void Graphics::write(std::string content, int x, int y, Uint8 r, Uint8 g, Uint8 
     }
     int len = content.length();
     for (int i = 0; i < len && x + i < numCols; ++i) {
-        preBuffer[y][x + i] = {content[i], r, g, b, a, 0, 0, 0, 255};
+        textDisplay[y][x + i]->setIndex(content[i]);
+        textDisplay[y][x + i]->setForeColor(r, g, b, a);
+        textDisplay[y][x + i]->setBackColor(0, 0, 0, 255);
+    }
+}
+
+void Graphics::write(std::string content, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a, Uint8 br, Uint8 bg, Uint8 bb, Uint8 ba) {
+    if (x >= numCols || y >= numRows) {
+        return;
+    }
+    int len = content.length();
+    for (int i = 0; i < len && x + i < numCols; ++i) {
+        textDisplay[y][x + i]->setIndex(content[i]);
+        textDisplay[y][x + i]->setForeColor(r, g, b, a);
+        textDisplay[y][x + i]->setBackColor(br, bg, bb, ba);
     }
 }
 
@@ -128,7 +149,9 @@ void Graphics::writeln(std::string content, int x, int y, int width) {
     int len = content.length();
     int j = 0;
     for (int i = 0; i < len; ++i) {
-        preBuffer[y][x + j] = {content[i], 255, 255, 255, 255, 0, 0, 0, 255};
+        textDisplay[y][x + j]->setIndex(content[i]);
+        textDisplay[y][x + j]->setForeColor(255, 255, 255, 255);
+        textDisplay[y][x + j]->setBackColor(0, 0, 0, 255);
         ++j;
         if (j == numCols || j == width) {
             ++y;
@@ -144,7 +167,9 @@ void Graphics::writeln(std::string content, int x, int y, int width, Uint8 r, Ui
     int len = content.length();
     int j = 0;
     for (int i = 0; i < len; ++i) {
-        preBuffer[y][x + j] = {content[i], r, g, b, a, 0, 0, 0, 255};
+        textDisplay[y][x + j]->setIndex(content[i]);
+        textDisplay[y][x + j]->setForeColor(r, g, b, a);
+        textDisplay[y][x + j]->setBackColor(0, 0, 0, 255);
         ++j;
         if (j == numCols || j == width) {
             ++y;
@@ -153,15 +178,31 @@ void Graphics::writeln(std::string content, int x, int y, int width, Uint8 r, Ui
     }
 }
 
-unsigned int Graphics::getScreenWidth() const { return screenWidth; }
-
-unsigned int Graphics::getScreenHeight() const { return screenHeight; }
-
-unsigned int Graphics::getScreenRows() const { return numRows; }
-
-unsigned int Graphics::getScreenCols() const { return numCols; }
+void Graphics::writeln(std::string content, int x, int y, int width, Uint8 r, Uint8 g, Uint8 b, Uint8 a, Uint8 br, Uint8 bg, Uint8 bb, Uint8 ba) {
+    if (x >= numCols || y >= numRows) {
+        return;
+    }
+    int len = content.length();
+    int j = 0;
+    for (int i = 0; i < len; ++i) {
+        textDisplay[y][x + j]->setIndex(content[i]);
+        textDisplay[y][x + j]->setForeColor(r, g, b, a);
+        textDisplay[y][x + j]->setBackColor(br, bg, bb, ba);
+        ++j;
+        if (j == numCols || j == width) {
+            ++y;
+            j = 0;
+        }
+    }
+}
 
 Graphics::~Graphics() {
+    if (tileset != nullptr) {
+        SDL_DestroyTexture(tileset);
+        tileset = nullptr;
+        tileWidth = 0;
+        tileHeight = 0;
+    }
     TTF_CloseFont(font);
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
@@ -169,23 +210,25 @@ Graphics::~Graphics() {
 }
 
 void Graphics::clear() {
-    SDL_RenderClear(renderer);
     for (int i = 0; i < numRows; ++i) {
         for (int j = 0; j < numCols; ++j) {
-            preBuffer[i][j] = {' ', 255, 255, 255, 255, 0, 0, 0, 255};
+            textDisplay[i][j]->setIndex(' ');
+            textDisplay[i][j]->setForeColor(255, 255, 255, 255);
+            textDisplay[i][j]->setBackColor(0, 0, 0, 255);
         }
     }
+    SDL_RenderClear(renderer);
 }
 
 void Graphics::render() {
     for (int i = 0; i < numRows; ++i) {
         for (int j = 0; j < numCols; ++j) {
-            textDisplay[i][j]->setBackColor(preBuffer[i][j].br, preBuffer[i][j].bg, preBuffer[i][j].bb, preBuffer[i][j].ba);
-            textDisplay[i][j]->setForeColor(preBuffer[i][j].r, preBuffer[i][j].g, preBuffer[i][j].b, preBuffer[i][j].a);
-            textDisplay[i][j]->loadFromText(renderer, std::string(1, preBuffer[i][j].ch), font);
-            textDisplay[i][j]->setBlendMode(SDL_BLENDMODE_BLEND);
             textDisplay[i][j]->render(renderer);
         }
     }
     SDL_RenderPresent(renderer);
 }
+
+unsigned int Graphics::getScreenRows() const { return numRows; }
+
+unsigned int Graphics::getScreenCols() const { return numCols; }

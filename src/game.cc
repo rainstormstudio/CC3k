@@ -24,7 +24,7 @@ bool Game::loop() const {
 }
 
 void Game::init() {
-    gfx = new Graphics("cc3k", 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
+    gfx = new Graphics("cc3k", "./assets/tilesets/Vintl01.png", 16, 16, 0, "./assets/fonts/Monaco.ttf", SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ROWS, SCREEN_COLS);
     gfx->importTxt("./assets/welcome.txt", false);
     events = new InputManager();
     manager = new EntityManager();
