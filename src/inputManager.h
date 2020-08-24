@@ -4,7 +4,11 @@
 #include <vector>
 #include <string>
 #include "types.h"
+#ifdef __linux__
 #include "SDL2/SDL.h"
+#elif __WIN32
+#include "SDL.h"
+#endif
 
 const int KEY_TOTAL = 256;
 
